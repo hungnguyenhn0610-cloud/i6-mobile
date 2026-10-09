@@ -14,7 +14,7 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-    <!-- LOGIN PANEL -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full">
             <h2 class="text-xl font-bold text-center text-brand-red mb-4"><i class="fa-solid fa-lock me-2"></i>ĐĂNG NHẬP ADMIN</h2>
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <!-- MAIN ADMIN DASHBOARD -->
+    <!-- MAIN DASHBOARD -->
     <div id="adminDashboard" class="hidden min-h-screen pb-12">
         <header class="bg-brand-dark text-white p-4 shadow-md flex justify-between items-center">
             <h1 class="font-bold text-lg"><i class="fa-solid fa-gauge text-yellow-400 me-2"></i> TRANG QUẢN TRỊ i6 MOBILE</h1>
@@ -33,7 +33,7 @@
         </header>
 
         <div class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
-            <!-- Thêm sản phẩm -->
+            <!-- Form Thêm Sản Phẩm -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
                 <h3 class="font-bold text-base border-b pb-3 mb-4 text-brand-red flex items-center gap-2">
                     <i class="fa-solid fa-plus-circle"></i> Thêm Sản Phẩm Mới Trực Tiếp
@@ -46,27 +46,49 @@
                         <option value="Xiaomi">Xiaomi</option>
                         <option value="OPPO">OPPO</option>
                     </select>
-                    <input type="number" id="pPrice" required placeholder="Giá bán (Số nguyên) *" class="border p-2.5 rounded-lg text-xs">
-                    <input type="number" id="pOldPrice" required placeholder="Giá niêm yết (Giá cũ) *" class="border p-2.5 rounded-lg text-xs">
+                    <input type="number" id="pPrice" required placeholder="Giá bán (Chỉ viết số) *" class="border p-2.5 rounded-lg text-xs">
+                    <input type="number" id="pOldPrice" required placeholder="Giá cũ (Chỉ viết số) *" class="border p-2.5 rounded-lg text-xs">
                     <input type="url" id="pImage" required placeholder="Link hình ảnh URL *" class="border p-2.5 rounded-lg text-xs md:col-span-2">
-                    <button type="submit" class="bg-brand-red text-white font-bold py-2.5 rounded-lg text-xs hover:bg-red-700 transition md:col-span-3">LƯU SẢN PHẨM MỚI</button>
+                    <button type="submit" class="bg-brand-red text-white font-bold py-2.5 rounded-lg text-xs hover:bg-red-700 transition md:col-span-3">THÊM SẢN PHẨM</button>
                 </form>
             </div>
 
-            <!-- Danh sách quản lý sản phẩm -->
+            <!-- Bảng Đơn Hàng Từ Khách -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <h3 class="font-bold text-base border-b pb-3 mb-4 text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-boxes-stacked text-brand-red"></i> Danh Sách Sản Phẩm Đang Bán
+                <h3 class="font-bold text-base border-b pb-3 mb-4 text-brand-red flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Đơn Hàng Mới Từ Khách
                 </h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr class="bg-gray-100 border-b">
-                                <th class="p-3">Hình ảnh</th>
+                                <th class="p-3">Thời gian</th>
+                                <th class="p-3">Khách hàng</th>
+                                <th class="p-3">Số điện thoại</th>
+                                <th class="p-3">Địa chỉ</th>
+                                <th class="p-3">Sản phẩm</th>
+                                <th class="p-3">Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrderTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bảng Quản Lý Sản Phẩm -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border">
+                <h3 class="font-bold text-base border-b pb-3 mb-4 text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-brand-red"></i> Danh Sách Sản Phẩm
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Ảnh</th>
                                 <th class="p-3">Tên sản phẩm</th>
                                 <th class="p-3">Hãng</th>
                                 <th class="p-3">Giá bán</th>
-                                <th class="p-3 text-center">Thao tác</th>
+                                <th class="p-3 text-center">Xóa</th>
                             </tr>
                         </thead>
                         <tbody id="adminProductTable"></tbody>
@@ -89,9 +111,9 @@
             if(pass === 'admin123') {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
-                renderAdminTable();
+                renderAdminData();
             } else {
-                alert('Mật khẩu Admin sai! (Thử: admin123)');
+                alert('Sai mật khẩu! (Thử lại: admin123)');
             }
         }
 
@@ -104,25 +126,38 @@
             return JSON.parse(localStorage.getItem('i6_products')) || defaultProducts;
         }
 
-        function saveProducts(prods) {
-            localStorage.setItem('i6_products', JSON.stringify(prods));
-            renderAdminTable();
-        }
-
-        function renderAdminTable() {
+        function renderAdminData() {
+            // Render Sản Phẩm
             const prods = getProducts();
-            const tbody = document.getElementById('adminProductTable');
-            tbody.innerHTML = prods.map(p => `
+            document.getElementById('adminProductTable').innerHTML = prods.map(p => `
                 <tr class="border-b hover:bg-gray-50">
-                    <td class="p-2"><img src="${p.image}" class="w-10 h-10 object-contain rounded bg-white"></td>
+                    <td class="p-2"><img src="${p.image}" class="w-8 h-8 object-contain rounded bg-white"></td>
                     <td class="p-2 font-bold">${p.name}</td>
                     <td class="p-2">${p.brand}</td>
                     <td class="p-2 text-brand-red font-bold">${p.price.toLocaleString('vi-VN')}đ</td>
                     <td class="p-2 text-center">
-                        <button onclick="deleteProduct(${p.id})" class="bg-red-100 text-red-600 hover:bg-red-200 px-2.5 py-1 rounded font-bold">Xóa</button>
+                        <button onclick="deleteProduct(${p.id})" class="bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1 rounded font-bold">Xóa</button>
                     </td>
                 </tr>
             `).join('');
+
+            // Render Đơn Hàng
+            const orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            const orderTbody = document.getElementById('adminOrderTable');
+            if(orders.length === 0) {
+                orderTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Chưa có đơn hàng nào</td></tr>`;
+            } else {
+                orderTbody.innerHTML = orders.map(o => `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-2 text-gray-500">${o.date}</td>
+                        <td class="p-2 font-bold">${o.customerName}</td>
+                        <td class="p-2 text-blue-600 font-bold">${o.phone}</td>
+                        <td class="p-2">${o.address}</td>
+                        <td class="p-2 font-bold text-gray-800">${o.productName}</td>
+                        <td class="p-2 text-brand-red font-bold">${o.price ? o.price.toLocaleString('vi-VN') + 'đ' : '0đ'}</td>
+                    </tr>
+                `).join('');
+            }
         }
 
         function handleAddProduct(e) {
@@ -137,15 +172,17 @@
                 image: document.getElementById('pImage').value
             };
             prods.unshift(newP);
-            saveProducts(prods);
-            alert('✅ Đã thêm sản phẩm mới thành công!');
+            localStorage.setItem('i6_products', JSON.stringify(prods));
+            renderAdminData();
+            alert('✅ Đã thêm sản phẩm thành công!');
             e.target.reset();
         }
 
         function deleteProduct(id) {
-            if(confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+            if(confirm('Xóa sản phẩm này?')) {
                 const prods = getProducts().filter(p => p.id !== id);
-                saveProducts(prods);
+                localStorage.setItem('i6_products', JSON.stringify(prods));
+                renderAdminData();
             }
         }
     </script>
