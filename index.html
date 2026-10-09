@@ -14,10 +14,15 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 antialiased">
 
-    <!-- HEADER -->
+    <!-- TOP NOTIFICATION BANNER -->
+    <div class="bg-gradient-to-r from-red-600 to-brand-red text-white text-xs md:text-sm py-1.5 px-4 text-center font-medium shadow-inner">
+        🔥 Siêu Sale Tháng 10: Tặng Đức khi thu cũ đổi mới iPhone 16 Series!
+    </div>
+
+    <!-- MAIN HEADER -->
     <header class="sticky top-0 z-40 bg-brand-red text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
-            <a href="#" class="text-xl md:text-2xl font-black uppercase text-white">
+            <a href="#" class="text-xl md:text-2xl font-black uppercase text-white flex items-center gap-1">
                 <i class="fa-solid fa-mobile-screen-button text-yellow-300 me-1"></i> i6<span class="text-yellow-300"> Mobile</span>
             </a>
 
@@ -40,25 +45,70 @@
         </div>
     </header>
 
-    <!-- HERO BANNER -->
+    <!-- HERO SECTION & CATEGORY MENU -->
     <section class="max-w-7xl mx-auto px-4 mt-4">
-        <div class="bg-gradient-to-r from-gray-900 to-slate-800 rounded-2xl p-6 md:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-            <div>
-                <span class="bg-yellow-400 text-brand-dark text-xs font-black px-3 py-1 rounded-full uppercase">SUPER FLAGSHIP 2024</span>
-                <h1 class="text-2xl md:text-4xl font-extrabold mt-2">iPhone 16 Pro Max 256GB</h1>
-                <p class="text-gray-300 text-sm mt-1 mb-4">Chip A18 Pro mạnh mẽ - Thiết kế Titan cao cấp!</p>
-                <div class="text-2xl md:text-3xl font-black text-yellow-400 mb-4">34.490.000đ</div>
-                <button onclick="openQuickOrder('iPhone 16 Pro Max 256GB', 34490000, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500')" 
-                        class="bg-brand-red hover:bg-brand-darkred text-white font-bold px-6 py-2.5 rounded-xl transition">
-                    MUA NGAY GIÁ SỐC
-                </button>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            
+            <!-- DANH MỤC SẢN PHẨM BÊN TRÁI -->
+            <div class="hidden lg:block bg-white rounded-xl shadow-sm p-3 border border-gray-100">
+                <h3 class="font-bold text-gray-800 mb-3 px-2 flex items-center gap-2 border-b pb-2">
+                    <i class="fa-solid fa-bars text-brand-red"></i> Danh mục sản phẩm
+                </h3>
+                <ul class="space-y-1 text-sm font-medium">
+                    <li>
+                        <a href="#productList" onclick="filterBrand('Apple')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-brands fa-apple text-base me-2.5 w-4"></i> iPhone (Apple)</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#productList" onclick="filterBrand('Samsung')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-solid fa-mobile-screen text-base me-2.5 w-4"></i> Samsung Galaxy</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#productList" onclick="filterBrand('Xiaomi')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-solid fa-bolt text-base me-2.5 w-4"></i> Xiaomi</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#productList" onclick="filterBrand('OPPO')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-solid fa-camera text-base me-2.5 w-4"></i> OPPO</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li class="pt-2 border-t">
+                        <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition text-brand-red font-semibold">
+                            <span><i class="fa-solid fa-rotate text-base me-2.5 w-4"></i> Thu cũ đổi mới</span>
+                            <span class="bg-red-100 text-brand-red text-[10px] px-1.5 py-0.5 rounded uppercase font-bold">Giá cao</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500" class="w-48 h-48 object-contain rounded-xl bg-white/5 p-2">
+
+            <!-- BANNER CHÍNH BÊN PHẢI -->
+            <div class="lg:col-span-3">
+                <div class="bg-gradient-to-r from-gray-900 to-slate-800 rounded-2xl p-6 md:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl min-h-[320px]">
+                    <div>
+                        <span class="bg-yellow-400 text-brand-dark text-xs font-black px-3 py-1 rounded-full uppercase">SUPER FLAGSHIP 2024</span>
+                        <h1 class="text-2xl md:text-4xl font-extrabold mt-2">iPhone 16 Pro Max 256GB</h1>
+                        <p class="text-gray-300 text-sm mt-1 mb-4">Chip A18 Pro mạnh mẽ - Thiết kế Titan cao cấp!</p>
+                        <div class="text-2xl md:text-3xl font-black text-yellow-400 mb-4">34.490.000đ</div>
+                        <button onclick="openQuickOrder('iPhone 16 Pro Max 256GB', 34490000, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500')" 
+                                class="bg-brand-red hover:bg-brand-darkred text-white font-bold px-6 py-2.5 rounded-xl transition shadow-lg">
+                            MUA NGAY GIÁ SỐC
+                        </button>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500" class="w-48 h-48 object-contain rounded-xl bg-white/5 p-2">
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- PRODUCT LIST -->
-    <section class="max-w-7xl mx-auto px-4 mt-8 mb-12">
+    <section class="max-w-7xl mx-auto px-4 mt-8 mb-12" id="productList">
         <div class="bg-white p-4 rounded-xl shadow-sm border mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 class="text-xl font-extrabold flex items-center gap-2"><i class="fa-solid fa-fire text-brand-red"></i> ĐIỆN THOẠI NỔI BẬT</h2>
             <div class="flex items-center gap-1 overflow-x-auto">
@@ -82,7 +132,7 @@
                 <input type="text" id="custName" required placeholder="Họ và tên người nhận *" class="w-full text-xs p-2.5 border rounded-lg">
                 <input type="tel" id="custPhone" required pattern="[0-9]{10}" placeholder="Số điện thoại *" class="w-full text-xs p-2.5 border rounded-lg">
                 <input type="text" id="custAddress" required placeholder="Địa chỉ giao hàng *" class="w-full text-xs p-2.5 border rounded-lg">
-                <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded-xl">XÁC NHẬN ĐẶT HÀNG</button>
+                <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded-xl hover:bg-brand-darkred transition">XÁC NHẬN ĐẶT HÀNG</button>
             </form>
         </div>
     </div>
@@ -203,6 +253,7 @@
                 date: new Date().toLocaleString('vi-VN')
             };
 
+            // Lưu đơn hàng vào LocalStorage
             const orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             orders.unshift(newOrder);
             localStorage.setItem('i6_orders', JSON.stringify(orders));
