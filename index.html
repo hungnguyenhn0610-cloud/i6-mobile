@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
-            theme: {
-                extend: { colors: { brand: { red: '#d70018', darkred: '#b80014', dark: '#1e293b' } } }
-            }
+            theme: { extend: { colors: { brand: { red: '#d70018', darkred: '#b80014', dark: '#1e293b' } } } }
         }
     </script>
 </head>
@@ -25,11 +23,10 @@
 
             <!-- Search Bar -->
             <div class="flex-1 max-w-xl relative hidden sm:block">
-                <input type="text" id="searchInput" placeholder="Bạn cần tìm điện thoại gì? (Ví dụ: iPhone 16...)" 
-                       class="w-full py-2 pl-10 pr-4 text-sm text-gray-900 bg-white rounded-lg focus:outline-none shadow-inner">
+                <input type="text" id="searchInput" placeholder="Bạn cần tìm điện thoại gì? (Gõ 'iPhone 16'...)" 
+                       class="w-full py-2 pl-10 pr-4 text-sm text-gray-900 bg-white rounded-lg focus:outline-none shadow-inner" autocomplete="off">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 
-                <!-- Search Auto Dropdown -->
                 <div id="searchDropdown" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-2xl border p-4 z-50 text-gray-800 text-xs">
                     <span class="font-bold text-gray-400 block mb-2">🔥 Gợi ý kết quả</span>
                     <div id="searchResultsContainer" class="space-y-2 max-h-60 overflow-y-auto"></div>
@@ -43,7 +40,7 @@
         </div>
     </header>
 
-    <!-- BANNER KHUYẾN MÃI -->
+    <!-- HERO BANNER -->
     <section class="max-w-7xl mx-auto px-4 mt-4">
         <div class="bg-gradient-to-r from-gray-900 to-slate-800 rounded-2xl p-6 md:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
             <div>
@@ -106,7 +103,6 @@
     </div>
 
     <script>
-        // Lấy sản phẩm từ LocalStorage (hoặc dùng sản phẩm mặc định)
         const defaultProducts = [
             { id: 1, name: 'iPhone 16 Pro Max 256GB', brand: 'Apple', price: 34490000, oldPrice: 34990000, image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500' },
             { id: 2, name: 'Samsung Galaxy S24 Ultra 12GB/256GB', brand: 'Samsung', price: 28990000, oldPrice: 33990000, image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500' },
@@ -202,15 +198,14 @@
                 customerName: name,
                 phone: phone,
                 address: address,
-                productName: selectedProductForOrder ? selectedProductForOrder.name : 'Đơn từ giỏ hàng',
+                productName: selectedProductForOrder ? selectedProductForOrder.name : 'Đơn hàng tổng hợp',
                 price: selectedProductForOrder ? selectedProductForOrder.price : 0,
                 date: new Date().toLocaleString('vi-VN')
             };
 
-            // Lưu đơn hàng vào LocalStorage để Admin xem
             const orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             orders.unshift(newOrder);
-            localStorage.getItem('i6_orders', JSON.stringify(orders));
+            localStorage.setItem('i6_orders', JSON.stringify(orders));
 
             alert('🎉 Đặt hàng thành công! Cảm ơn bạn đã mua sắm tại i6 Mobile.');
             closeModal('orderModal');
@@ -218,12 +213,14 @@
             document.getElementById('cartCount').innerText = '0';
         }
 
-        // Tìm kiếm Auto
         const searchInput = document.getElementById('searchInput');
         const searchDropdown = document.getElementById('searchDropdown');
         const searchResultsContainer = document.getElementById('searchResultsContainer');
 
         if(searchInput) {
+            searchInput.addEventListener('focus', () => {
+                if(searchInput.value.trim()) searchDropdown.classList.remove('hidden');
+            });
             searchInput.addEventListener('input', (e) => {
                 const query = e.target.value.trim().toLowerCase();
                 const products = getProducts();
@@ -247,6 +244,11 @@
                         searchResultsContainer.innerHTML = `<p class="text-gray-400 italic text-center py-2">Không tìm thấy sản phẩm</p>`;
                     }
                 } else {
+                    searchDropdown.classList.add('hidden');
+                }
+            });
+            document.addEventListener('click', (e) => {
+                if(!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
                     searchDropdown.classList.add('hidden');
                 }
             });
