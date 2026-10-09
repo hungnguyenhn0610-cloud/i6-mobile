@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>i6 Mobile - Hệ Thống Bán Lẻ Điện Thoại Uy Tín Toàn Quốc</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#d70018',
+                            darkred: '#b80014',
+                            accent: '#ff4d4f',
+                            dark: '#1e293b',
+                            gray: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 antialiased selection:bg-brand-red selection:text-white">
+
+    <!-- TOP NOTIFICATION BANNER -->
+    <div class="bg-gradient-to-r from-red-600 to-brand-red text-white text-xs md:text-sm py-1.5 px-4 text-center font-medium shadow-inner">
+        🔥 Siêu Sale Tháng 10: Tặng Đức khi thu cũ đổi mới iPhone 16 Series!
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="sticky top-0 z-40 bg-brand-red text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2 md:gap-6">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 text-xl md:text-2xl font-black tracking-wider uppercase text-white hover:opacity-90 transition">
+                <i class="fa-solid me-1 fa-mobile-screen-button text-yellow-300"></i>
+                i6<span class="text-yellow-300"> Mobile</span>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="flex-1 max-w-xl relative hidden sm:block">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Bạn cần tìm điện thoại gì? (Ví dụ: iPhone 16, S24 Ultra...)" 
+                           class="w-full py-2 pl-10 pr-4 text-sm text-gray-900 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-inner" autocomplete="off">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+
+                <!-- DROPDOWN TÌM KIẾM -->
+                <div id="searchDropdown" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 text-gray-800 text-xs">
+                    <div class="mb-3 rounded-lg overflow-hidden bg-gradient-to-r from-red-500 to-brand-red p-2.5 flex items-center justify-between text-white shadow-sm cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-yellow-300 text-brand-dark font-black text-[10px] px-1.5 py-0.5 rounded uppercase">HOT</span>
+                            <span class="font-bold text-xs">iPhone 16 Pro Max - Thu cũ trợ giá 5 triệu</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs opacity-80"></i>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-gray-400 text-[11px] uppercase tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử tìm kiếm
+                            </span>
+                            <button id="clearHistoryBtn" class="text-[11px] text-gray-400 hover:text-brand-red font-medium transition">Xoá tất cả</button>
+                        </div>
+                        <div id="historyList" class="flex flex-wrap gap-1.5">
+                            <span class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-full cursor-pointer transition">
+                                iPhone 16 Pro Max <i class="fa-solid fa-xmark text-[10px] text-gray-400 hover:text-red-500"></i>
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-full cursor-pointer transition">
+                                Galaxy S24 Ultra <i class="fa-solid fa-xmark text-[10px] text-gray-400 hover:text-red-500"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="font-bold text-gray-400 text-[11px] uppercase tracking-wider block mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-fire text-brand-red"></i> Xu hướng tìm kiếm
+                        </span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="#productList" onclick="filterBrand('Apple')" class="flex items-center gap-2.5 p-2 hover:bg-red-50 rounded-lg group transition border border-transparent hover:border-red-100">
+                                <div class="w-9 h-9 rounded-md bg-gray-100 flex items-center justify-center font-bold text-gray-600 group-hover:bg-brand-red group-hover:text-white transition">
+                                    <i class="fa-brands fa-apple text-base"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 group-hover:text-brand-red transition">iPhone 16 Series</p>
+                                    <span class="text-[10px] text-gray-400">Giá từ 21.990.000đ</span>
+                                </div>
+                            </a>
+
+                            <a href="#productList" onclick="filterBrand('Samsung')" class="flex items-center gap-2.5 p-2 hover:bg-red-50 rounded-lg group transition border border-transparent hover:border-red-100">
+                                <div class="w-9 h-9 rounded-md bg-gray-100 flex items-center justify-center font-bold text-gray-600 group-hover:bg-brand-red group-hover:text-white transition">
+                                    <i class="fa-solid fa-mobile-screen text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 group-hover:text-brand-red transition">Galaxy S24 Ultra</p>
+                                    <span class="text-[10px] text-gray-400">Giảm ngay 15%</span>
+                                </div>
+                            </a>
+
+                            <a href="#productList" onclick="filterBrand('Xiaomi')" class="flex items-center gap-2.5 p-2 hover:bg-red-50 rounded-lg group transition border border-transparent hover:border-red-100">
+                                <div class="w-9 h-9 rounded-md bg-gray-100 flex items-center justify-center font-bold text-gray-600 group-hover:bg-brand-red group-hover:text-white transition">
+                                    <i class="fa-solid fa-bolt text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 group-hover:text-brand-red transition">Xiaomi 14 Ultra</p>
+                                    <span class="text-[10px] text-gray-400">Camera Leica</span>
+                                </div>
+                            </a>
+
+                            <a href="#productList" onclick="filterBrand('OPPO')" class="flex items-center gap-2.5 p-2 hover:bg-red-50 rounded-lg group transition border border-transparent hover:border-red-100">
+                                <div class="w-9 h-9 rounded-md bg-gray-100 flex items-center justify-center font-bold text-gray-600 group-hover:bg-brand-red group-hover:text-white transition">
+                                    <i class="fa-solid fa-camera text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 group-hover:text-brand-red transition">OPPO Find X7</p>
+                                    <span class="text-[10px] text-gray-400">Chuyên gia chụp ảnh</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2 md:gap-4 text-xs md:text-sm">
+                <button class="hidden lg:flex items-center gap-1.5 bg-red-800/50 hover:bg-red-800 p-2 rounded-lg transition border border-red-400/30">
+                    <i class="fa-solid fa-location-dot text-yellow-300 text-base"></i>
+                    <div class="text-left leading-tight">
+                        <span class="block text-[10px] text-gray-200">Xem giá tại</span>
+                        <span class="font-semibold">Hà Nội</span>
+                    </div>
+                </button>
+
+                <a href="tel:18006868" class="hidden md:flex items-center gap-1.5 bg-red-800/50 hover:bg-red-800 p-2 rounded-lg transition border border-red-400/30">
+                    <i class="fa-solid fa-phone text-yellow-300 text-base"></i>
+                    <div class="text-left leading-tight">
+                        <span class="block text-[10px] text-gray-200">Hotline free</span>
+                        <span class="font-semibold">1800.6868</span>
+                    </div>
+                </a>
+
+                <button onclick="toggleCartModal()" class="relative flex items-center gap-2 bg-yellow-400 hover:bg-yellow-300 text-brand-dark px-3 py-2 rounded-lg font-bold transition shadow-sm">
+                    <div class="relative">
+                        <i class="fa-solid fa-cart-shopping text-base"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-brand-red text-white text-[10px] font-black rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                    </div>
+                    <span class="hidden md:inline">Giỏ hàng</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="px-4 pb-2.5 sm:hidden">
+            <div class="relative">
+                <input type="text" placeholder="Tìm điện thoại..." 
+                       class="w-full py-1.5 pl-9 pr-4 text-xs text-gray-900 bg-white rounded-md focus:outline-none">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION & FLASH SALE BANNER -->
+    <section class="max-w-7xl mx-auto px-4 mt-4">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <!-- Left Category Menu (Desktop) -->
+            <div class="hidden lg:block bg-white rounded-xl shadow-sm p-3 border border-gray-100">
+                <h3 class="font-bold text-gray-800 mb-3 px-2 flex items-center gap-2 border-b pb-2">
+                    <i class="fa-solid fa-bars text-brand-red"></i> Danh mục sản phẩm
+                </h3>
+                <ul class="space-y-1 text-sm font-medium">
+                    <li>
+                        <a href="#productList" onclick="filterBrand('Apple')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-brands fa-apple text-base me-2.5 w-4"></i> iPhone (Apple)</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#productList" onclick="filterBrand('Samsung')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-solid fa-mobile-screen text-base me-2.5 w-4"></i> Samsung Galaxy</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#productList" onclick="filterBrand('Xiaomi')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-solid fa-bolt text-base me-2.5 w-4"></i> Xiaomi</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#productList" onclick="filterBrand('OPPO')" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition">
+                            <span><i class="fa-solid fa-camera text-base me-2.5 w-4"></i> OPPO</span>
+                            <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        </a>
+                    </li>
+                    <li class="pt-2 border-t">
+                        <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-red-50 hover:text-brand-red transition text-brand-red font-semibold">
+                            <span><i class="fa-solid fa-rotate text-base me-2.5 w-4"></i> Thu cũ đổi mới</span>
+                            <span class="bg-red-100 text-brand-red text-[10px] px-1.5 py-0.5 rounded uppercase font-bold">Giá cao</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Center Promo Slider -->
+            <div class="lg:col-span-3 space-y-4">
+                <div class="relative bg-gradient-to-r from-gray-900 via-slate-800 to-gray-900 rounded-2xl overflow-hidden shadow-xl text-white p-6 md:p-10 flex flex-col justify-between min-h-[300px]">
+                    <div class="absolute -right-10 -bottom-10 opacity-20 pointer-events-none">
+                        <i class="fa-solid fa-mobile-screen text-[260px] text-white"></i>
+                    </div>
+
+                    <div class="max-w-lg z-10">
+                        <span class="inline-block bg-yellow-400 text-brand-dark text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider mb-3">
+                            Super Flagship 2024
+                        </span>
+                        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight mb-2">
+                            iPhone 16 Pro Max 256GB
+                        </h1>
+                        <p class="text-gray-300 text-sm md:text-base mb-4">
+                            Chip A18 Pro siêu mạnh mẽ. Nút Control Camera mới. Thiết kế Titan sa mạc đẳng cấp!
+                        </p>
+                        
+                        <div class="flex items-baseline gap-3 mb-6">
+                            <span class="text-2xl md:text-3xl font-black text-yellow-400">34.490.000đ</span>
+                            <span class="text-sm md:text-base text-gray-400 line-through">34.990.000đ</span>
+                            <span class="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">-1.5 Tr</span>
+                        </div>
+
+                        <button onclick="addToCart(1)" 
+                                class="bg-brand-red hover:bg-brand-darkred text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-red-900/50 transition duration-200 transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-yellow-300"></i> MUA NGAY GIÁ SỐC
+                        </button>
+                    </div>
+
+                    <!-- Flash Sale Countdown -->
+                    <div class="mt-6 z-10 bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-red-500 text-xl animate-bounce"></i>
+                            <span class="font-bold uppercase text-sm tracking-wide">FLASH SALE KẾT THÚC SAU:</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-center font-mono" id="countdownTimer">
+                            <div class="bg-brand-dark text-yellow-400 px-2.5 py-1 rounded font-bold text-base min-w-[36px]" id="hours">08</div>:
+                            <div class="bg-brand-dark text-yellow-400 px-2.5 py-1 rounded font-bold text-base min-w-[36px]" id="minutes">45</div>:
+                            <div class="bg-brand-dark text-yellow-400 px-2.5 py-1 rounded font-bold text-base min-w-[36px]" id="seconds">12</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT FILTER & CATEGORY BAR -->
+    <section class="max-w-7xl mx-auto px-4 mt-8" id="productList">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-fire-flame-curved text-brand-red"></i> ĐIỆN THOẠI NỔI BẬT NHẤT
+                    </h2>
+                    <p class="text-xs text-gray-500 mt-0.5">Lựa chọn các siêu phẩm công nghệ hàng đầu với ưu đãi tốt nhất</p>
+                </div>
+
+                <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 md:pb-0">
+                    <button onclick="filterBrand('All')" class="brand-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition bg-brand-red text-white">Tất cả</button>
+                    <button onclick="filterBrand('Apple')" class="brand-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">Apple (iPhone)</button>
+                    <button onclick="filterBrand('Samsung')" class="brand-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">Samsung</button>
+                    <button onclick="filterBrand('Xiaomi')" class="brand-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">Xiaomi</button>
+                    <button onclick="filterBrand('OPPO')" class="brand-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">OPPO</button>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-3 text-xs">
+                <span class="text-gray-500">Hiển thị <span id="productCount" class="font-bold text-gray-800">0</span> sản phẩm</span>
+                <div class="flex items-center gap-2">
+                    <label class="text-gray-500">Sắp xếp:</label>
+                    <select id="sortSelect" onchange="sortProducts()" class="border border-gray-300 rounded-
