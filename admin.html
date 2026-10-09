@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Trị Hệ Thống - i6 Mobile Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: { red: '#d70018', dark: '#1e293b' } } } }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <!-- LOGIN PANEL -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full">
+            <h2 class="text-xl font-bold text-center text-brand-red mb-4"><i class="fa-solid fa-lock me-2"></i>ĐĂNG NHẬP ADMIN</h2>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <input type="password" id="adminPass" required placeholder="Nhập mật khẩu admin..." class="w-full p-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
+                <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">ĐĂNG NHẬP</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN DASHBOARD -->
+    <div id="adminDashboard" class="hidden min-h-screen pb-12">
+        <header class="bg-brand-dark text-white p-4 shadow-md flex justify-between items-center">
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-gauge text-yellow-400 me-2"></i> TRANG QUẢN TRỊ i6 MOBILE</h1>
+            <button onclick="logout()" class="text-xs bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg font-bold">Đăng xuất</button>
+        </header>
+
+        <div class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+            <!-- Thêm sản phẩm -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border">
+                <h3 class="font-bold text-base border-b pb-3 mb-4 text-brand-red flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle"></i> Thêm Sản Phẩm Mới Trực Tiếp
+                </h3>
+                <form onsubmit="handleAddProduct(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" id="pName" required placeholder="Tên sản phẩm *" class="border p-2.5 rounded-lg text-xs">
+                    <select id="pBrand" required class="border p-2.5 rounded-lg text-xs bg-white">
+                        <option value="Apple">Apple (iPhone)</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Xiaomi">Xiaomi</option>
+                        <option value="OPPO">OPPO</option>
+                    </select>
+                    <input type="number" id="pPrice" required placeholder="Giá bán (Số nguyên) *" class="border p-2.5 rounded-lg text-xs">
+                    <input type="number" id="pOldPrice" required placeholder="Giá niêm yết (Giá cũ) *" class="border p-2.5 rounded-lg text-xs">
+                    <input type="url" id="pImage" required placeholder="Link hình ảnh URL *" class="border p-2.5 rounded-lg text-xs md:col-span-2">
+                    <button type="submit" class="bg-brand-red text-white font-bold py-2.5 rounded-lg text-xs hover:bg-red-700 transition md:col-span-3">LƯU SẢN PHẨM MỚI</button>
+                </form>
+            </div>
+
+            <!-- Danh sách quản lý sản phẩm -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border">
+                <h3 class="font-bold text-base border-b pb-3 mb-4 text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-brand-red"></i> Danh Sách Sản Phẩm Đang Bán
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Hình ảnh</th>
+                                <th class="p-3">Tên sản phẩm</th>
+                                <th class="p-3">Hãng</th>
+                                <th class="p-3">Giá bán</th>
+                                <th class="p-3 text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminProductTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultProducts = [
+            { id: 1, name: 'iPhone 16 Pro Max 256GB', brand: 'Apple', price: 34490000, oldPrice: 34990000, image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500' },
+            { id: 2, name: 'Samsung Galaxy S24 Ultra 12GB/256GB', brand: 'Samsung', price: 28990000, oldPrice: 33990000, image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500' },
+            { id: 3, name: 'Xiaomi 14 Ultra 16GB/512GB', brand: 'Xiaomi', price: 29990000, oldPrice: 32990000, image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500' }
+        ];
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPass').value;
+            if(pass === 'admin123') {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                renderAdminTable();
+            } else {
+                alert('Mật khẩu Admin sai! (Thử: admin123)');
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+        }
+
+        function getProducts() {
+            return JSON.parse(localStorage.getItem('i6_products')) || defaultProducts;
+        }
+
+        function saveProducts(prods) {
+            localStorage.setItem('i6_products', JSON.stringify(prods));
+            renderAdminTable();
+        }
+
+        function renderAdminTable() {
+            const prods = getProducts();
+            const tbody = document.getElementById('adminProductTable');
+            tbody.innerHTML = prods.map(p => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-2"><img src="${p.image}" class="w-10 h-10 object-contain rounded bg-white"></td>
+                    <td class="p-2 font-bold">${p.name}</td>
+                    <td class="p-2">${p.brand}</td>
+                    <td class="p-2 text-brand-red font-bold">${p.price.toLocaleString('vi-VN')}đ</td>
+                    <td class="p-2 text-center">
+                        <button onclick="deleteProduct(${p.id})" class="bg-red-100 text-red-600 hover:bg-red-200 px-2.5 py-1 rounded font-bold">Xóa</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handleAddProduct(e) {
+            e.preventDefault();
+            const prods = getProducts();
+            const newP = {
+                id: Date.now(),
+                name: document.getElementById('pName').value,
+                brand: document.getElementById('pBrand').value,
+                price: parseInt(document.getElementById('pPrice').value),
+                oldPrice: parseInt(document.getElementById('pOldPrice').value),
+                image: document.getElementById('pImage').value
+            };
+            prods.unshift(newP);
+            saveProducts(prods);
+            alert('✅ Đã thêm sản phẩm mới thành công!');
+            e.target.reset();
+        }
+
+        function deleteProduct(id) {
+            if(confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                const prods = getProducts().filter(p => p.id !== id);
+                saveProducts(prods);
+            }
+        }
+    </script>
+</body>
+</html>
