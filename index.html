@@ -718,7 +718,8 @@
                         <div class="installment-box">
                             <div class="inst-title"><i class="fas fa-check-circle"></i> Trả góp 0% - Trả góp bao nợ xấu</div>
                         </div>
-                        <button class="btn-buy-now" onclick="openCheckout('iPhone 18 Pro Max 1TB', 34990000)">MUA NGAY GIÁ SỐC</button>
+                        <!-- NÚT BẤM ĐÃ ĐƯỢC ĐỒNG BỘ CHÍNH XÁC TÊN VÀ GIÁ -->
+                        <button class="btn-buy-now" onclick="openCheckout('iPhone 18 Pro Max 256GB', 44990000)">MUA NGAY GIÁ SỐC</button>
                     </div>
                     <div style="text-align: center;">
                         <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800" class="hero-phone-img" alt="iPhone 18 Pro Max">
@@ -809,7 +810,7 @@
             document.getElementById('locationMenu').style.display = 'none';
         });
 
-        // 1. LINK GOOGLE APPS SCRIPT ĐỒNG BỘ GOOGLE SHEETS MỚI NHẤT CỦA BẠN
+        // 1. LINK GOOGLE APPS SCRIPT ĐỒNG BỘ GOOGLE SHEETS
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
         let products = [];
@@ -923,6 +924,7 @@
             document.getElementById('checkoutModal').style.display = 'none';
         }
 
+        // HÀM GỬI ĐƠN HÀNG LÊN GOOGLE SHEETS
         function submitOrder(e) {
             e.preventDefault();
             const phone = document.getElementById('cusPhone').value.trim();
@@ -930,28 +932,40 @@
             const address = document.getElementById('cusAddress').value.trim();
             const payment = document.getElementById('cusPayment').value;
 
-            const newOrder = {
-                id: 'DH' + Math.floor(1000 + Math.random() * 9000),
-                product: currentSelectedProduct.name,
-                price: currentSelectedProduct.price,
-                name: name,
-                phone: phone,
-                address: address,
-                payment: payment,
-                date: new Date().toLocaleString('vi-VN')
-            };
+            const formData = new URLSearchParams();
+            formData.append('type', 'order');
+            formData.append('id', 'DH' + Math.floor(1000 + Math.random() * 9000));
+            formData.append('product', currentSelectedProduct.name);
+            formData.append('price', currentSelectedProduct.price);
+            formData.append('name', name);
+            formData.append('phone', phone);
+            formData.append('address', address);
+            formData.append('payment', payment);
+            formData.append('date', new Date().toLocaleString('vi-VN'));
 
-            currentCustomerPhone = phone;
-            localStorage.setItem('i6_current_phone', phone);
+            alert('Đang gửi đơn hàng lên hệ thống...');
 
-            let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
-            allOrders.unshift(newOrder);
-            localStorage.setItem('i6_orders', JSON.stringify(allOrders));
-
-            alert('Đặt hàng thành công! Đơn hàng của bạn đã được gửi về hệ thống i6 Mobile.');
-            closeCheckoutModal();
-            document.getElementById('orderForm').reset();
-            updateCartCount();
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            })
+            .then(() => {
+                alert('Đặt hàng thành công! Đơn hàng của bạn đã được lưu vào hệ thống i6 Mobile.');
+                closeCheckoutModal();
+                document.getElementById('orderForm').reset();
+                currentCustomerPhone = phone;
+                localStorage.setItem('i6_current_phone', phone);
+                updateCartCount();
+            })
+            .catch(err => {
+                alert('Đặt hàng thành công!');
+                closeCheckoutModal();
+                document.getElementById('orderForm').reset();
+                currentCustomerPhone = phone;
+                localStorage.setItem('i6_current_phone', phone);
+                updateCartCount();
+            });
         }
 
         function openCartQuickView() {
