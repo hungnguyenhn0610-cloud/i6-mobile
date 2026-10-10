@@ -3,187 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Trị Hệ Thống - i6 Mobile Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Trang Quản Trị Admin - i6 Mobile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: { extend: { colors: { brand: { red: '#d70018', dark: '#1e293b' } } } }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-    </script>
-</head>
-<body class="bg-gray-100 font-sans text-gray-800">
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full">
-            <h2 class="text-xl font-bold text-center text-brand-red mb-4"><i class="fa-solid fa-lock me-2"></i>ĐĂNG NHẬP ADMIN</h2>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <input type="password" id="adminPass" required placeholder="Nhập mật khẩu admin..." class="w-full p-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
-                <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">ĐĂNG NHẬP</button>
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* MÀN HÌNH ĐĂNG NHẬP */
+        #loginScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* GIAO DIỆN QUẢN TRỊ CHÍNH */
+        #adminDashboard {
+            display: none;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .admin-header-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #d70018;
+            color: white;
+            border-color: #d70018;
+        }
+
+        .admin-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .btn-main {
+            background: #d70018;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f9fafb;
+        }
+
+        .back-link {
+            color: #d70018;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MÀN HÌNH BẢO MẬT ĐĂNG NHẬP -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <h2 style="margin-bottom: 20px; color: #d70018; text-align: center;"><i class="fas fa-lock"></i> Đăng Nhập Admin</h2>
+            <div class="form-group">
+                <label>Mật khẩu quản trị (Mặc định: admin123):</label>
+                <input type="password" id="adminPassInput" placeholder="Nhập mật khẩu...">
+            </div>
+            <button class="btn-main" style="width: 100%;" onclick="loginAdmin()">ĐĂNG NHẬP HỆ THỐNG</button>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Quay lại trang chủ i6 Mobile</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- GIAO DIỆN QUẢN TRỊ CHÍNH -->
+    <div id="adminDashboard">
+        <div class="admin-header-bar">
+            <h2><i class="fas fa-cogs"></i> Quản Trị i6 Mobile</h2>
+            <div>
+                <a href="index.html" class="back-link" style="margin-right: 20px;" target="_blank"><i class="fas fa-external-link-alt"></i> Xem Website</a>
+                <button class="btn-main" onclick="logoutAdmin()" style="background: #4b5563;">Đăng xuất</button>
+            </div>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('addProductTab', this)"><i class="fas fa-plus-circle"></i> Thêm Sản Phẩm Mới</button>
+            <button class="tab-btn" onclick="switchTab('ordersTab', this)"><i class="fas fa-shopping-bag"></i> Đơn Hàng Mới (<span id="orderCountBadge">0</span>)</button>
+        </div>
+
+        <!-- TAB 1: THÊM SẢN PHẨM -->
+        <div id="addProductTab" class="admin-card">
+            <h3 style="margin-bottom: 15px; color: #1f2937;">Thêm điện thoại mới lên gian hàng</h3>
+            <form id="addProductForm" onsubmit="addNewProduct(event)">
+                <div class="form-group">
+                    <label>Tên điện thoại:</label>
+                    <input type="text" id="prodName" required placeholder="VD: iPhone 18 Pro Max 512GB">
+                </div>
+                <div class="form-group">
+                    <label>Giá bán ưu đãi (VNĐ):</label>
+                    <input type="number" id="prodPrice" required placeholder="VD: 31990000">
+                </div>
+                <div class="form-group">
+                    <label>Giá cũ niêm yết (VNĐ):</label>
+                    <input type="number" id="prodOldPrice" required placeholder="VD: 35990000">
+                </div>
+                <div class="form-group">
+                    <label>Link ảnh sản phẩm (URL trực tuyến):</label>
+                    <input type="url" id="prodImg" required placeholder="Dán link ảnh vào đây...">
+                </div>
+                <div class="form-group">
+                    <label>Chương trình khuyến mãi / Tặng kèm:</label>
+                    <input type="text" id="prodPromo" placeholder="VD: Tặng củ sạc 45W • Trả góp 0%">
+                </div>
+                <button type="submit" class="btn-main">ĐĂNG SẢN PHẨM LÊN WEBSITE</button>
             </form>
         </div>
-    </div>
 
-    <!-- MAIN DASHBOARD -->
-    <div id="adminDashboard" class="hidden min-h-screen pb-12">
-        <header class="bg-brand-dark text-white p-4 shadow-md flex justify-between items-center">
-            <h1 class="font-bold text-lg"><i class="fa-solid fa-gauge text-yellow-400 me-2"></i> TRANG QUẢN TRỊ i6 MOBILE</h1>
-            <button onclick="logout()" class="text-xs bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg font-bold">Đăng xuất</button>
-        </header>
-
-        <div class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
-            <!-- Form Thêm Sản Phẩm -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <h3 class="font-bold text-base border-b pb-3 mb-4 text-brand-red flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> Thêm Sản Phẩm Mới Trực Tiếp
-                </h3>
-                <form onsubmit="handleAddProduct(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <input type="text" id="pName" required placeholder="Tên sản phẩm *" class="border p-2.5 rounded-lg text-xs">
-                    <select id="pBrand" required class="border p-2.5 rounded-lg text-xs bg-white">
-                        <option value="Apple">Apple (iPhone)</option>
-                        <option value="Samsung">Samsung</option>
-                        <option value="Xiaomi">Xiaomi</option>
-                        <option value="OPPO">OPPO</option>
-                    </select>
-                    <input type="number" id="pPrice" required placeholder="Giá bán (Chỉ viết số) *" class="border p-2.5 rounded-lg text-xs">
-                    <input type="number" id="pOldPrice" required placeholder="Giá cũ (Chỉ viết số) *" class="border p-2.5 rounded-lg text-xs">
-                    <input type="url" id="pImage" required placeholder="Link hình ảnh URL *" class="border p-2.5 rounded-lg text-xs md:col-span-2">
-                    <button type="submit" class="bg-brand-red text-white font-bold py-2.5 rounded-lg text-xs hover:bg-red-700 transition md:col-span-3">THÊM SẢN PHẨM</button>
-                </form>
-            </div>
-
-            <!-- Bảng Đơn Hàng Từ Khách -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <h3 class="font-bold text-base border-b pb-3 mb-4 text-brand-red flex items-center gap-2">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> Đơn Hàng Mới Từ Khách
-                </h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100 border-b">
-                                <th class="p-3">Thời gian</th>
-                                <th class="p-3">Khách hàng</th>
-                                <th class="p-3">Số điện thoại</th>
-                                <th class="p-3">Địa chỉ</th>
-                                <th class="p-3">Sản phẩm</th>
-                                <th class="p-3">Giá</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminOrderTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Bảng Quản Lý Sản Phẩm -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <h3 class="font-bold text-base border-b pb-3 mb-4 text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-boxes-stacked text-brand-red"></i> Danh Sách Sản Phẩm
-                </h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100 border-b">
-                                <th class="p-3">Ảnh</th>
-                                <th class="p-3">Tên sản phẩm</th>
-                                <th class="p-3">Hãng</th>
-                                <th class="p-3">Giá bán</th>
-                                <th class="p-3 text-center">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminProductTable"></tbody>
-                    </table>
-                </div>
+        <!-- TAB 2: XEM ĐƠN HÀNG ĐẨY VỀ -->
+        <div id="ordersTab" class="admin-card" style="display: none;">
+            <h3 style="margin-bottom: 15px; color: #1f2937;">Danh sách khách hàng đặt mua / trả góp</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Sản phẩm đặt</th>
+                            <th>Hình thức thanh toán</th>
+                            <th>Thời gian</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <!-- Đơn hàng tự động đồng bộ vào đây -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <script>
-        const defaultProducts = [
-            { id: 1, name: 'iPhone 16 Pro Max 256GB', brand: 'Apple', price: 34490000, oldPrice: 34990000, image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500' },
-            { id: 2, name: 'Samsung Galaxy S24 Ultra 12GB/256GB', brand: 'Samsung', price: 28990000, oldPrice: 33990000, image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500' },
-            { id: 3, name: 'Xiaomi 14 Ultra 16GB/512GB', brand: 'Xiaomi', price: 29990000, oldPrice: 32990000, image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500' }
-        ];
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('adminPass').value;
-            if(pass === 'admin123') {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                renderAdminData();
+        function loginAdmin() {
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === 'admin123') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadOrders();
             } else {
-                alert('Sai mật khẩu! (Thử lại: admin123)');
+                alert('Mật khẩu quản trị không đúng! (Mật khẩu mặc định: admin123)');
             }
         }
 
-        function logout() {
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
+        function logoutAdmin() {
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminPassInput').value = '';
         }
 
-        function getProducts() {
-            return JSON.parse(localStorage.getItem('i6_products')) || defaultProducts;
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.admin-card').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).style.display = 'block';
+            btn.classList.add('active');
+            if(tabId === 'ordersTab') loadOrders();
         }
 
-        function renderAdminData() {
-            // Render Sản Phẩm
-            const prods = getProducts();
-            document.getElementById('adminProductTable').innerHTML = prods.map(p => `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="p-2"><img src="${p.image}" class="w-8 h-8 object-contain rounded bg-white"></td>
-                    <td class="p-2 font-bold">${p.name}</td>
-                    <td class="p-2">${p.brand}</td>
-                    <td class="p-2 text-brand-red font-bold">${p.price.toLocaleString('vi-VN')}đ</td>
-                    <td class="p-2 text-center">
-                        <button onclick="deleteProduct(${p.id})" class="bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1 rounded font-bold">Xóa</button>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Render Đơn Hàng
-            const orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
-            const orderTbody = document.getElementById('adminOrderTable');
-            if(orders.length === 0) {
-                orderTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Chưa có đơn hàng nào</td></tr>`;
-            } else {
-                orderTbody.innerHTML = orders.map(o => `
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-2 text-gray-500">${o.date}</td>
-                        <td class="p-2 font-bold">${o.customerName}</td>
-                        <td class="p-2 text-blue-600 font-bold">${o.phone}</td>
-                        <td class="p-2">${o.address}</td>
-                        <td class="p-2 font-bold text-gray-800">${o.productName}</td>
-                        <td class="p-2 text-brand-red font-bold">${o.price ? o.price.toLocaleString('vi-VN') + 'đ' : '0đ'}</td>
-                    </tr>
-                `).join('');
-            }
-        }
-
-        function handleAddProduct(e) {
+        function addNewProduct(e) {
             e.preventDefault();
-            const prods = getProducts();
+            let defaultProducts = [
+                { id: 1, name: "iPhone 18 Pro Max 1TB", price: 34990000, oldPrice: 39990000, img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800", promo: "Tặng củ sạc 45W • Trả góp 0%" },
+                { id: 2, name: "iPhone 17 Pro 256GB", price: 26990000, oldPrice: 29990000, img: "https://images.unsplash.com/photo-1695048065451-460455648d84?auto=format&fit=crop&q=80&w=800", promo: "Giảm ngay 1 triệu khi thu cũ đổi mới" },
+                { id: 3, name: "Samsung Galaxy S26 Ultra", price: 27990000, oldPrice: 31990000, img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800", promo: "Trả góp 0% lãi suất qua thẻ tín dụng" },
+                { id: 4, name: "Xiaomi 15 Ultra 5G", price: 19990000, oldPrice: 22990000, img: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=800", promo: "Bảo hành 2 năm chính hãng" }
+            ];
+
+            let products = JSON.parse(localStorage.getItem('i6_products')) || defaultProducts;
+
             const newP = {
-                id: Date.now(),
-                name: document.getElementById('pName').value,
-                brand: document.getElementById('pBrand').value,
-                price: parseInt(document.getElementById('pPrice').value),
-                oldPrice: parseInt(document.getElementById('pOldPrice').value),
-                image: document.getElementById('pImage').value
+                id: products.length + 1,
+                name: document.getElementById('prodName').value,
+                price: Number(document.getElementById('prodPrice').value),
+                oldPrice: Number(document.getElementById('prodOldPrice').value),
+                img: document.getElementById('prodImg').value,
+                promo: document.getElementById('prodPromo').value || "Chính hãng • Bảo hành 12 tháng"
             };
-            prods.unshift(newP);
-            localStorage.setItem('i6_products', JSON.stringify(prods));
-            renderAdminData();
-            alert('✅ Đã thêm sản phẩm thành công!');
-            e.target.reset();
+
+            products.unshift(newP);
+            localStorage.setItem('i6_products', JSON.stringify(products));
+            alert('Thêm sản phẩm thành công! Sản phẩm đã xuất hiện trên trang chủ i6 Mobile.');
+            document.getElementById('addProductForm').reset();
         }
 
-        function deleteProduct(id) {
-            if(confirm('Xóa sản phẩm này?')) {
-                const prods = getProducts().filter(p => p.id !== id);
-                localStorage.setItem('i6_products', JSON.stringify(prods));
-                renderAdminData();
+        function loadOrders() {
+            let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            const tbody = document.getElementById('orderTableBody');
+            document.getElementById('orderCountBadge').innerText = orders.length;
+            tbody.innerHTML = '';
+
+            if (orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Chưa có đơn hàng nào được đặt từ khách hàng.</td></tr>`;
+                return;
             }
+
+            orders.forEach(o => {
+                const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(o.price).replace('₫', 'đ');
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${o.id}</strong></td>
+                        <td>${o.name}<br><small style="color:#666;">${o.address}</small></td>
+                        <td>${o.phone}</td>
+                        <td>${o.product}<br><strong style="color:#d70018;">${formattedPrice}</strong></td>
+                        <td><span style="color:green; font-weight:600;">${o.payment}</span></td>
+                        <td>${o.date}</td>
+                    </tr>
+                `;
+            });
         }
     </script>
 </body>
