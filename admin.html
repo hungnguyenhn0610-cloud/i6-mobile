@@ -222,7 +222,11 @@
         </div>
     </div>
 
+    <!-- SCRIPT QUẢN TRỊ ADMIN -->
     <script>
+        // Link Web App Google Apps Script kết nối Google Sheets
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6vPa9jUV_Cfiw7U9w5R8Vyx95MTr-mCuj9ZTdCqvhC9Q3HQ-yxM6m7GT3SbHvTd4/exec";
+
         function loginAdmin() {
             const pass = document.getElementById('adminPassInput').value;
             if (pass === 'admin123') {
@@ -248,30 +252,36 @@
             if(tabId === 'ordersTab') loadOrders();
         }
 
+        // HÀM THÊM SẢN PHẨM GỬI LÊN GOOGLE SHEETS
         function addNewProduct(e) {
             e.preventDefault();
-            let defaultProducts = [
-                { id: 1, name: "iPhone 18 Pro Max 1TB", price: 34990000, oldPrice: 39990000, img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800", promo: "Tặng củ sạc 45W • Trả góp 0%" },
-                { id: 2, name: "iPhone 17 Pro 256GB", price: 26990000, oldPrice: 29990000, img: "https://images.unsplash.com/photo-1695048065451-460455648d84?auto=format&fit=crop&q=80&w=800", promo: "Giảm ngay 1 triệu khi thu cũ đổi mới" },
-                { id: 3, name: "Samsung Galaxy S26 Ultra", price: 27990000, oldPrice: 31990000, img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800", promo: "Trả góp 0% lãi suất qua thẻ tín dụng" },
-                { id: 4, name: "Xiaomi 15 Ultra 5G", price: 19990000, oldPrice: 22990000, img: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=800", promo: "Bảo hành 2 năm chính hãng" }
-            ];
-
-            let products = JSON.parse(localStorage.getItem('i6_products')) || defaultProducts;
-
+            
             const newP = {
-                id: products.length + 1,
-                name: document.getElementById('prodName').value,
+                name: document.getElementById('prodName').value.trim(),
                 price: Number(document.getElementById('prodPrice').value),
                 oldPrice: Number(document.getElementById('prodOldPrice').value),
-                img: document.getElementById('prodImg').value,
-                promo: document.getElementById('prodPromo').value || "Chính hãng • Bảo hành 12 tháng"
+                img: document.getElementById('prodImg').value.trim(),
+                promo: document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng"
             };
 
-            products.unshift(newP);
-            localStorage.setItem('i6_products', JSON.stringify(products));
-            alert('Thêm sản phẩm thành công! Sản phẩm đã xuất hiện trên trang chủ i6 Mobile.');
-            document.getElementById('addProductForm').reset();
+            alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newP)
+            })
+            .then(() => {
+                alert('Thêm sản phẩm thành công! Sản phẩm đã được lưu vào Google Sheets và xuất hiện trên trang chủ.');
+                document.getElementById('addProductForm').reset();
+            })
+            .catch(err => {
+                alert('Có lỗi xảy ra khi lưu sản phẩm!');
+                console.error(err);
+            });
         }
 
         function loadOrders() {
