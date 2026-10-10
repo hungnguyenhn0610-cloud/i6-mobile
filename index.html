@@ -397,22 +397,6 @@
             font-size: 12px;
         }
 
-        .btn-buy-now {
-            background: #d70018;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-buy-now:hover {
-            background: #b50014;
-        }
-
         .hero-phone-img {
             width: 100%;
             max-width: 200px;
@@ -718,8 +702,6 @@
                         <div class="installment-box">
                             <div class="inst-title"><i class="fas fa-check-circle"></i> Trả góp 0% - Trả góp bao nợ xấu</div>
                         </div>
-                        <!-- NÚT MUA NGAY TRÊN BANNER -->
-                        <button class="btn-buy-now" onclick="openCheckout('iPhone 18 Pro Max 256GB', 44990000)">MUA NGAY GIÁ SỐC</button>
                     </div>
                     <div style="text-align: center;">
                         <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800" class="hero-phone-img" alt="iPhone 18 Pro Max">
@@ -810,14 +792,12 @@
             document.getElementById('locationMenu').style.display = 'none';
         });
 
-        // 1. LINK GOOGLE APPS SCRIPT ĐỒNG BỘ GOOGLE SHEETS
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
         let products = [];
         let currentCustomerPhone = localStorage.getItem('i6_current_phone') || '';
         let currentSelectedProduct = null;
 
-        // 2. HÀM TẢI SẢN PHẨM TỪ GOOGLE SHEETS VỀ HIỂN THỊ
         function fetchProductsFromSheet() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm từ hệ thống...</div>';
@@ -838,7 +818,6 @@
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'đ');
         }
 
-        // 3. LỌC ĐƠN HÀNG THEO SỐ ĐIỆN THOẠI KHÁCH HÀNG
         function getCustomerOrders() {
             let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             if (!currentCustomerPhone) return [];
@@ -924,7 +903,6 @@
             document.getElementById('checkoutModal').style.display = 'none';
         }
 
-        // HÀM GỬI ĐƠN HÀNG LÊN GOOGLE SHEETS
         function submitOrder(e) {
             e.preventDefault();
             const phone = document.getElementById('cusPhone').value.trim();
@@ -953,42 +931,27 @@
             .then(() => {
                 alert('Đặt hàng thành công! Đơn hàng của bạn đã được lưu vào hệ thống i6 Mobile.');
                 closeCheckoutModal();
-                document.getElementById('orderForm').reset();
                 currentCustomerPhone = phone;
                 localStorage.setItem('i6_current_phone', phone);
+                let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+                allOrders.push({
+                    phone: phone,
+                    product: currentSelectedProduct.name,
+                    price: currentSelectedProduct.price,
+                    date: new Date().toLocaleString('vi-VN')
+                });
+                localStorage.setItem('i6_orders', JSON.stringify(allOrders));
                 updateCartCount();
             })
             .catch(err => {
-                alert('Đặt hàng thành công!');
-                closeCheckoutModal();
-                document.getElementById('orderForm').reset();
-                currentCustomerPhone = phone;
-                localStorage.setItem('i6_current_phone', phone);
-                updateCartCount();
+                console.error('Lỗi:', err);
+                alert('Có lỗi xảy ra khi gửi đơn hàng.');
             });
         }
 
-        function openCartQuickView() {
-            let myOrders = getCustomerOrders();
-            if (myOrders.length === 0) {
-                let phoneInput = prompt("Chưa có đơn hàng nào trên thiết bị này. Nhập số điện thoại của bạn để tra cứu các đơn đã đặt:");
-                if (phoneInput && phoneInput.trim() !== '') {
-                    currentCustomerPhone = phoneInput.trim();
-                    localStorage.setItem('i6_current_phone', currentCustomerPhone);
-                    let checkedOrders = getCustomerOrders();
-                    alert(`Tìm thấy ${checkedOrders.length} đơn hàng cho SĐT: ${currentCustomerPhone}`);
-                    updateCartCount();
-                }
-            } else {
-                let listText = myOrders.map(o => `- Mã đơn ${o.id}: ${o.product} (${formatCurrency(o.price)})`).join('\n');
-                alert(`Danh sách đơn hàng của bạn (${currentCustomerPhone}):\n\n` + listText);
-            }
-        }
-
-        // TỰ ĐỘNG TẢI DỮ LIỆU TỪ GOOGLE SHEETS KHI MỞ TRANG WEB
+        // Tự động tải sản phẩm khi load trang
         window.onload = function() {
             fetchProductsFromSheet();
-            updateCartCount();
         };
     </script>
 </body>
