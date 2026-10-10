@@ -807,7 +807,27 @@
         window.addEventListener('click', () => {
             document.getElementById('locationMenu').style.display = 'none';
         });
+// Thay link bên dưới bằng link Web App bạn copy từ Google Apps Script
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2gVvyNdp4xcsQVbM5eaVV4Z1r4vGHocz-BwWYgw/dev";
 
+function fetchProductsFromSheet() {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm...</div>';
+    
+    fetch(SCRIPT_URL)
+        .then(response => response.json())
+        .then(data => {
+            products = data;
+            renderProducts();
+        })
+        .catch(err => {
+            console.error('Lỗi tải dữ liệu:', err);
+            renderProducts();
+        });
+}
+
+// Giữ lại khai báo mảng sản phẩm gốc để phòng hờ khi mất mạng
+let products = [];
         // 1. Chỉ lấy sản phẩm do Admin thêm (mặc định mảng rỗng nếu chưa có)
         let products = JSON.parse(localStorage.getItem('i6_products')) || [];
         
@@ -958,9 +978,9 @@
         }
 
         window.onload = function() {
-            renderProducts();
-            updateCartCount();
-        };
+    fetchProductsFromSheet();
+    updateCartCount();
+};
     </script>
 </body>
 </html>
