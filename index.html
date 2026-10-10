@@ -15,13 +15,13 @@
         }
 
         body {
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #bae6fd; /* Đã chỉnh màu phông nền xanh rõ nét hơn */
+            color: #1e293b;
         }
 
         /* 1. TOP BAR */
         .top-bar {
-            background-color: #d70018;
+            background-color: #0284c7;
             color: white;
             font-size: 12px;
             padding: 6px 0;
@@ -50,7 +50,7 @@
 
         /* 2. MAIN HEADER */
         .header {
-            background-color: #d70018;
+            background-color: #0369a1;
             padding: 10px 0;
             position: sticky;
             top: 0;
@@ -72,29 +72,20 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: white;
-            font-weight: 800;
-            font-size: 26px;
-            letter-spacing: -1px;
+            gap: 8px;
+        }
+
+        .logo-cellphones-style .brand-logo {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
         }
 
         .logo-cellphones-style .brand-text {
             font-family: Arial, Helvetica, sans-serif;
             color: #ffffff;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 900;
-        }
-
-        .logo-cellphones-style .brand-box {
-            background: transparent;
-            border: 2px solid #ffffff;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 900;
-            padding: 1px 5px;
-            border-radius: 4px;
-            margin-left: 4px;
-            line-height: 1;
         }
 
         /* DROPDOWN CHỌN ĐỊA ĐIỂM */
@@ -142,8 +133,8 @@
         }
 
         .location-item:hover {
-            background-color: #fef2f2;
-            color: #d70018;
+            background-color: #e0f2fe;
+            color: #0284c7;
         }
 
         /* SEARCH BOX & SUGGESTIONS */
@@ -196,7 +187,7 @@
         }
 
         .suggestion-item:hover {
-            background-color: #fef2f2;
+            background-color: #e0f2fe;
         }
 
         .suggestion-item img {
@@ -240,7 +231,7 @@
         /* SIDEBAR MENU */
         .sidebar {
             width: 220px;
-            background: white;
+            background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             overflow: hidden;
@@ -255,6 +246,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #0369a1;
         }
 
         .sidebar-menu {
@@ -274,14 +266,14 @@
         }
 
         .sidebar-menu li a:hover {
-            background-color: #fef2f2;
-            color: #d70018;
+            background-color: #e0f2fe;
+            color: #0284c7;
         }
 
         /* MAIN BANNER */
         .main-banner {
             flex: 1;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0c4a6e 100%);
             border-radius: 12px;
             padding: 20px 24px;
             color: white;
@@ -297,7 +289,7 @@
         }
 
         .fire-badge {
-            color: #ff4d4f;
+            color: #38bdf8;
             font-weight: 800;
             font-size: 14px;
             display: flex;
@@ -306,12 +298,12 @@
         }
 
         .timer-badge {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
             padding: 3px 10px;
             border-radius: 20px;
             font-size: 11px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         .banner-content-grid {
@@ -323,7 +315,7 @@
 
         .sub-title {
             display: inline-block;
-            background: #d97706;
+            background: #0284c7;
             color: #fff;
             font-size: 11px;
             font-weight: 700;
@@ -339,11 +331,11 @@
         }
 
         .banner-product-title span {
-            color: #fbbf24;
+            color: #38bdf8;
         }
 
         .banner-product-desc {
-            color: #9ca3af;
+            color: #bae6fd;
             font-size: 12px;
             margin-bottom: 12px;
         }
@@ -365,17 +357,17 @@
         .main-price {
             font-size: 24px;
             font-weight: 800;
-            color: #ef4444;
+            color: #38bdf8;
         }
 
         .old-price {
             font-size: 13px;
-            color: #6b7280;
+            color: #94a3b8;
             text-decoration: line-through;
         }
 
         .discount-badge {
-            background: #ef4444;
+            background: #0284c7;
             color: white;
             font-size: 11px;
             font-weight: 700;
@@ -392,7 +384,7 @@
         }
 
         .inst-title {
-            color: #10b981;
+            color: #34d399;
             font-weight: 700;
             font-size: 12px;
         }
@@ -404,12 +396,54 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         }
 
+        /* FILTER TAG / CHIP */
+        .filter-tags-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag-chip {
+            display: inline-flex;
+            align-items: center;
+            background-color: #0369a1;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .chip-logo-img {
+            height: 18px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .tag-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            opacity: 0.8;
+        }
+
+        .tag-close-btn:hover {
+            opacity: 1;
+        }
+
         /* 4. PRODUCT GRID */
         .section-title {
             font-size: 18px;
             font-weight: 800;
             margin-bottom: 15px;
-            color: #111;
+            color: #0c4a6e;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -458,7 +492,7 @@
         .card-price {
             font-size: 16px;
             font-weight: 800;
-            color: #d70018;
+            color: #0284c7;
         }
 
         .card-old-price {
@@ -469,9 +503,9 @@
         }
 
         .card-promo {
-            background: #fef2f2;
-            border: 1px solid #fee2e2;
-            color: #dc2626;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
             font-size: 11px;
             padding: 6px;
             border-radius: 6px;
@@ -485,7 +519,7 @@
 
         .btn-card-buy {
             flex: 1;
-            background: #d70018;
+            background: #0284c7;
             color: white;
             border: none;
             padding: 8px;
@@ -495,11 +529,15 @@
             cursor: pointer;
         }
 
+        .btn-card-buy:hover {
+            background: #0369a1;
+        }
+
         .btn-card-installment {
             flex: 1;
             background: #fff;
-            color: #d70018;
-            border: 1px solid #d70018;
+            color: #0284c7;
+            border: 1px solid #0284c7;
             padding: 8px;
             border-radius: 6px;
             font-weight: 600;
@@ -531,7 +569,7 @@
             font-weight: 700;
             color: #1f2937;
             margin-bottom: 12px;
-            border-bottom: 2px solid #d70018;
+            border-bottom: 2px solid #0284c7;
             padding-bottom: 6px;
             display: inline-block;
         }
@@ -542,7 +580,7 @@
         }
 
         .footer-col p i {
-            color: #d70018;
+            color: #0284c7;
             width: 20px;
         }
 
@@ -608,7 +646,7 @@
         }
 
         .btn-submit {
-            background: #d70018;
+            background: #0284c7;
             color: white;
             border: none;
             padding: 12px;
@@ -616,6 +654,10 @@
             font-weight: 700;
             width: 100%;
             cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background: #0369a1;
         }
     </style>
 </head>
@@ -638,10 +680,10 @@
     <!-- MAIN HEADER -->
     <header class="header">
         <div class="header-container">
-            <!-- LOGO I6MOBILE -->
+            <!-- LOGO I6MOBILE Ở HEADER (Thay URL_HINH_ANH_LOGO_CUA_BAN bằng link ảnh logo của bạn) -->
             <a href="index.html" class="logo-cellphones-style">
+                <img src="URL_HINH_ANH_LOGO_CUA_BAN" alt="i6 Mobile Logo" class="brand-logo">
                 <span class="brand-text">i6mobile</span>
-                <span class="brand-box"></span>
             </a>
 
             <!-- DROPDOWN CHỌN ĐỊA ĐIỂM -->
@@ -650,8 +692,8 @@
                     <i class="fas fa-map-marker-alt"></i> <span id="currentLocationText">Hà Nội</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
                 </button>
                 <div class="location-menu" id="locationMenu">
-                    <div class="location-item" onclick="selectLocation('Hà Nội')"><i class="fas fa-map-marker-alt" style="color:#d70018"></i> Hà Nội</div>
-                    <div class="location-item" onclick="selectLocation('TP. Hồ Chí Minh')"><i class="fas fa-map-marker-alt" style="color:#d70018"></i> TP. Hồ Chí Minh</div>
+                    <div class="location-item" onclick="selectLocation('Hà Nội')"><i class="fas fa-map-marker-alt" style="color:#0284c7"></i> Hà Nội</div>
+                    <div class="location-item" onclick="selectLocation('TP. Hồ Chí Minh')"><i class="fas fa-map-marker-alt" style="color:#0284c7"></i> TP. Hồ Chí Minh</div>
                 </div>
             </div>
 
@@ -710,6 +752,16 @@
             </main>
         </div>
 
+        <!-- THẺ CHIP / TAG (Đã tích hợp link logo thay cho quả địa cầu) -->
+        <div class="filter-tags-wrapper" id="filterTagsWrapper">
+            <div class="filter-tag-chip">
+                <!-- Thay URL_HINH_ANH_LOGO_CUA_BAN thành link ảnh logo của bạn -->
+                <img src="https://www.i6mobile.com/logo.jpg" alt="Logo" class="chip-logo-img">
+                <span>Trang Chủ</span>
+                <button class="tag-close-btn" onclick="removeFilterChip(this)">&times;</button>
+            </div>
+        </div>
+
         <!-- PRODUCT LIST SECTION -->
         <h2 class="section-title"><i class="fas fa-star" style="color: #f59e0b;"></i> ĐIỆN THOẠI NỔI BẬT NHẤT</h2>
         <div class="product-grid" id="productGrid">
@@ -746,7 +798,7 @@
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeCheckoutModal()">&times;</button>
-            <h2 style="margin-bottom: 15px; color: #d70018;">Xác Nhận Đặt Hàng / Trả Góp</h2>
+            <h2 style="margin-bottom: 15px; color: #0284c7;">Xác Nhận Đặt Hàng / Trả Góp</h2>
             <div id="checkoutProductInfo" style="margin-bottom: 15px; font-weight: bold; background: #f9f9f9; padding: 10px; border-radius: 6px;"></div>
             <form id="orderForm" onsubmit="submitOrder(event)">
                 <div class="form-group">
@@ -792,6 +844,11 @@
             document.getElementById('locationMenu').style.display = 'none';
         });
 
+        function removeFilterChip(btn) {
+            const chip = btn.closest('.filter-tag-chip');
+            if (chip) chip.remove();
+        }
+
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
         let products = [];
@@ -810,7 +867,7 @@
                 })
                 .catch(err => {
                     console.error('Lỗi tải dữ liệu:', err);
-                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #d70018; font-weight: 600;">Không thể tải sản phẩm từ Google Sheets.</div>';
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #0284c7; font-weight: 600;">Không thể tải sản phẩm từ Google Sheets.</div>';
                 });
         }
 
@@ -879,7 +936,7 @@
                         <img src="${p.img}" alt="">
                         <div>
                             <div style="font-weight:700; font-size:13px;">${p.name}</div>
-                            <div style="color:#d70018; font-weight:700; font-size:12px;">${formatCurrency(p.price)}</div>
+                            <div style="color:#0284c7; font-weight:700; font-size:12px;">${formatCurrency(p.price)}</div>
                         </div>
                     </div>
                 `;
@@ -895,7 +952,7 @@
 
         function openCheckout(productName, price) {
             currentSelectedProduct = { name: productName, price: price };
-            document.getElementById('checkoutProductInfo').innerHTML = `Sản phẩm: <span style="color:#d70018">${productName}</span> - Giá: <span style="color:#d70018">${formatCurrency(price)}</span>`;
+            document.getElementById('checkoutProductInfo').innerHTML = `Sản phẩm: <span style="color:#0284c7">${productName}</span> - Giá: <span style="color:#0284c7">${formatCurrency(price)}</span>`;
             document.getElementById('checkoutModal').style.display = 'flex';
         }
 
@@ -949,7 +1006,6 @@
             });
         }
 
-        // Tự động tải sản phẩm khi load trang
         window.onload = function() {
             fetchProductsFromSheet();
         };
