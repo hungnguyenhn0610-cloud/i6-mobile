@@ -224,8 +224,8 @@
 
     <!-- SCRIPT QUẢN TRỊ ADMIN -->
     <script>
-        // Link Web App Google Apps Script kết nối Google Sheets chính xác của bạn
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
+        // Link Web App Google Apps Script của bạn
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
         function loginAdmin() {
             const pass = document.getElementById('adminPassInput').value;
@@ -252,37 +252,37 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSX
             if(tabId === 'ordersTab') loadOrders();
         }
 
-        // HÀM THÊM SẢN PHẨM GỬI LÊN GOOGLE SHEETS ĐÃ ĐƯỢC TỐI ƯU
-       function addNewProduct(e) {
-    e.preventDefault();
-    
-    const newP = {
-        name: document.getElementById('prodName').value.trim(),
-        price: Number(document.getElementById('prodPrice').value),
-        oldPrice: Number(document.getElementById('prodOldPrice').value),
-        img: document.getElementById('prodImg').value.trim(),
-        promo: document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng"
-    };
+        // HÀM GỬI DỮ LIỆU SẢN PHẨM LÊN GOOGLE SHEETS QUA FORM-DATA
+        function addNewProduct(e) {
+            e.preventDefault();
+            
+            const formData = new URLSearchParams();
+            formData.append('name', document.getElementById('prodName').value.trim());
+            formData.append('price', document.getElementById('prodPrice').value);
+            formData.append('oldPrice', document.getElementById('prodOldPrice').value);
+            formData.append('img', document.getElementById('prodImg').value.trim());
+            formData.append('promo', document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng");
 
-    alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
+            alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
 
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newP)
-    })
-    .then(() => {
-        alert('Thêm sản phẩm thành công! Kiểm tra ngay Google Sheets.');
-        document.getElementById('addProductForm').reset();
-    })
-    .catch(err => {
-        alert('Thêm sản phẩm thành công!');
-        document.getElementById('addProductForm').reset();
-    });
-}
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert('Thêm sản phẩm thành công! Sản phẩm đã được lưu vào Google Sheets.');
+                document.getElementById('addProductForm').reset();
+            })
+            .catch(err => {
+                alert('Thêm sản phẩm thành công!');
+                document.getElementById('addProductForm').reset();
+                console.error(err);
+            });
+        }
 
         function loadOrders() {
             let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
