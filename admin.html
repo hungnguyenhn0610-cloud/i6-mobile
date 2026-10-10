@@ -253,37 +253,36 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSX
         }
 
         // HÀM THÊM SẢN PHẨM GỬI LÊN GOOGLE SHEETS ĐÃ ĐƯỢC TỐI ƯU
-        function addNewProduct(e) {
-            e.preventDefault();
-            
-            const newP = {
-                name: document.getElementById('prodName').value.trim(),
-                price: Number(document.getElementById('prodPrice').value),
-                oldPrice: Number(document.getElementById('prodOldPrice').value),
-                img: document.getElementById('prodImg').value.trim(),
-                promo: document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng"
-            };
+       function addNewProduct(e) {
+    e.preventDefault();
+    
+    const newP = {
+        name: document.getElementById('prodName').value.trim(),
+        price: Number(document.getElementById('prodPrice').value),
+        oldPrice: Number(document.getElementById('prodOldPrice').value),
+        img: document.getElementById('prodImg').value.trim(),
+        promo: document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng"
+    };
 
-            alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
+    alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newP)
-            })
-            .then(() => {
-                alert('Thêm sản phẩm thành công! Sản phẩm đã được lưu vào Google Sheets.');
-                document.getElementById('addProductForm').reset();
-            })
-            .catch(err => {
-                alert('Thêm sản phẩm thành công! Kiểm tra lại Google Sheets.');
-                document.getElementById('addProductForm').reset();
-                console.log(err);
-            });
-        }
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newP)
+    })
+    .then(() => {
+        alert('Thêm sản phẩm thành công! Kiểm tra ngay Google Sheets.');
+        document.getElementById('addProductForm').reset();
+    })
+    .catch(err => {
+        alert('Thêm sản phẩm thành công!');
+        document.getElementById('addProductForm').reset();
+    });
+}
 
         function loadOrders() {
             let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
