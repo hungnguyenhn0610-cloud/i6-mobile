@@ -15,13 +15,13 @@
         }
 
         body {
-            background-color: #bae6fd; /* Đã chỉnh màu phông nền xanh rõ nét hơn */
+            background-color: #f1f5f9; /* Phông nền màu xanh xám nhạt hiện đại, dịu mắt */
             color: #1e293b;
         }
 
         /* 1. TOP BAR */
         .top-bar {
-            background-color: #0284c7;
+            background-color: #1e293b; /* Xanh đậm lịch lãm cho thanh trên cùng */
             color: white;
             font-size: 12px;
             padding: 6px 0;
@@ -50,7 +50,7 @@
 
         /* 2. MAIN HEADER */
         .header {
-            background-color: #0369a1;
+            background-color: #0f172a; /* Xanh than chuyên nghiệp */
             padding: 10px 0;
             position: sticky;
             top: 0;
@@ -94,7 +94,7 @@
         }
 
         .location-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -187,7 +187,7 @@
         }
 
         .suggestion-item:hover {
-            background-color: #e0f2fe;
+            background-color: #f1f5f9;
         }
 
         .suggestion-item img {
@@ -231,7 +231,7 @@
         /* SIDEBAR MENU */
         .sidebar {
             width: 220px;
-            background: #ffffff;
+            background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             overflow: hidden;
@@ -246,7 +246,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #0369a1;
+            color: #0f172a;
         }
 
         .sidebar-menu {
@@ -266,14 +266,14 @@
         }
 
         .sidebar-menu li a:hover {
-            background-color: #e0f2fe;
+            background-color: #f1f5f9;
             color: #0284c7;
         }
 
         /* MAIN BANNER */
         .main-banner {
             flex: 1;
-            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0c4a6e 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%);
             border-radius: 12px;
             padding: 20px 24px;
             color: white;
@@ -315,7 +315,7 @@
 
         .sub-title {
             display: inline-block;
-            background: #0284c7;
+            background: #d97706;
             color: #fff;
             font-size: 11px;
             font-weight: 700;
@@ -335,7 +335,7 @@
         }
 
         .banner-product-desc {
-            color: #bae6fd;
+            color: #94a3b8;
             font-size: 12px;
             margin-bottom: 12px;
         }
@@ -362,7 +362,7 @@
 
         .old-price {
             font-size: 13px;
-            color: #94a3b8;
+            color: #64748b;
             text-decoration: line-through;
         }
 
@@ -407,7 +407,7 @@
         .filter-tag-chip {
             display: inline-flex;
             align-items: center;
-            background-color: #0369a1;
+            background-color: #1e293b;
             color: white;
             padding: 5px 12px;
             border-radius: 20px;
@@ -443,7 +443,7 @@
             font-size: 18px;
             font-weight: 800;
             margin-bottom: 15px;
-            color: #0c4a6e;
+            color: #0f172a;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -503,9 +503,9 @@
         }
 
         .card-promo {
-            background: #e0f2fe;
-            border: 1px solid #bae6fd;
-            color: #0369a1;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
             font-size: 11px;
             padding: 6px;
             border-radius: 6px;
@@ -549,7 +549,7 @@
         .footer {
             background: #ffffff;
             margin-top: 40px;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid #e2e8f0;
             padding: 30px 0 20px 0;
             color: #4b5563;
             font-size: 13px;
@@ -586,11 +586,11 @@
 
         .footer-bottom {
             text-align: center;
-            border-top: 1px solid #f3f4f6;
+            border-top: 1px solid #f1f5f9;
             margin-top: 25px;
             padding-top: 15px;
             font-size: 12px;
-            color: #9ca3af;
+            color: #94a3b8;
         }
 
         /* MODAL ĐẶT HÀNG */
@@ -608,407 +608,4 @@
         }
 
         .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 500px;
-            border-radius: 12px;
-            padding: 25px;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-
-        .btn-submit {
-            background: #0284c7;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-        }
-
-        .btn-submit:hover {
-            background: #0369a1;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        <div class="top-bar-container">
-            <div class="top-bar-left">
-                <a href="#" class="top-bar-item">Thu cũ giá ngon - <strong>Lên đời tiết kiệm</strong></a>
-                <span>•</span>
-                <a href="#" class="top-bar-item"><i class="fas fa-certificate"></i> Sản phẩm <strong>Chính hãng</strong></a>
-            </div>
-            <div class="top-bar-right">
-                <a href="#" class="top-bar-item"><i class="fas fa-phone-alt"></i> Hotline: 1900.5338</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN HEADER -->
-    <header class="header">
-        <div class="header-container">
-            <!-- LOGO I6MOBILE Ở HEADER (Thay URL_HINH_ANH_LOGO_CUA_BAN bằng link ảnh logo của bạn) -->
-            <a href="index.html" class="logo-cellphones-style">
-                <img src="URL_HINH_ANH_LOGO_CUA_BAN" alt="i6 Mobile Logo" class="brand-logo">
-                <span class="brand-text">i6mobile</span>
-            </a>
-
-            <!-- DROPDOWN CHỌN ĐỊA ĐIỂM -->
-            <div class="location-dropdown">
-                <button class="location-btn" onclick="toggleLocationMenu(event)">
-                    <i class="fas fa-map-marker-alt"></i> <span id="currentLocationText">Hà Nội</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
-                </button>
-                <div class="location-menu" id="locationMenu">
-                    <div class="location-item" onclick="selectLocation('Hà Nội')"><i class="fas fa-map-marker-alt" style="color:#0284c7"></i> Hà Nội</div>
-                    <div class="location-item" onclick="selectLocation('TP. Hồ Chí Minh')"><i class="fas fa-map-marker-alt" style="color:#0284c7"></i> TP. Hồ Chí Minh</div>
-                </div>
-            </div>
-
-            <!-- THANH TÌM KIẾM CÓ GỢI Ý -->
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Bạn cần tìm điện thoại gì? (VD: iPhone, Samsung...)" oninput="handleSearch(this.value)">
-                <div class="search-suggestions" id="searchSuggestions"></div>
-            </div>
-
-            <div class="header-action" onclick="openCartQuickView()">
-                <i class="fas fa-shopping-cart"></i> Giỏ hàng (<span id="cartCount">0</span>)
-            </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <div class="container">
-        <!-- HERO BANNER -->
-        <div class="hero-section">
-            <aside class="sidebar">
-                <div class="sidebar-title"><i class="fas fa-bars"></i> Danh mục sản phẩm</div>
-                <ul class="sidebar-menu">
-                    <li><a href="#"><span><i class="fab fa-apple"></i> iPhone (Apple)</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                    <li><a href="#"><span><i class="fas fa-mobile"></i> Samsung Galaxy</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                    <li><a href="#"><span><i class="fas fa-bolt"></i> Xiaomi</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                    <li><a href="#"><span><i class="fas fa-camera"></i> OPPO</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                </ul>
-            </aside>
-
-            <main class="main-banner">
-                <div class="banner-top-badge">
-                    <div class="fire-badge"><i class="fas fa-fire"></i> SIÊU KHUYẾN MÃI CỰC SỐC</div>
-                    <div class="timer-badge"><i class="far fa-clock"></i> Ưu đãi có hạn</div>
-                </div>
-                <div class="banner-content-grid">
-                    <div class="banner-info">
-                        <div class="sub-title"><i class="fas fa-crown"></i> SIÊU PHẨM MỚI RA MẮT</div>
-                        <h1 class="banner-product-title">iPhone 18 Pro Max <span>256GB</span></h1>
-                        <p class="banner-product-desc">Thiết kế Titanium Sang Trọng • Chip A20 Pro Bionic Siêu Đỉnh</p>
-                        <div class="price-box">
-                            <div class="price-values">
-                                <span class="main-price">44.990.000đ</span>
-                                <span class="old-price">42.990.000đ</span>
-                                <span class="discount-badge">-4.45%</span>
-                            </div>
-                        </div>
-                        <div class="installment-box">
-                            <div class="inst-title"><i class="fas fa-check-circle"></i> Trả góp 0% - Trả góp bao nợ xấu</div>
-                        </div>
-                    </div>
-                    <div style="text-align: center;">
-                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800" class="hero-phone-img" alt="iPhone 18 Pro Max">
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <!-- THẺ CHIP / TAG (Đã tích hợp link logo thay cho quả địa cầu) -->
-        <div class="filter-tags-wrapper" id="filterTagsWrapper">
-            <div class="filter-tag-chip">
-                <!-- Thay URL_HINH_ANH_LOGO_CUA_BAN thành link ảnh logo của bạn -->
-                <img src="https://www.i6mobile.com/logo.jpg" alt="Logo" class="chip-logo-img">
-                <span>Trang Chủ</span>
-                <button class="tag-close-btn" onclick="removeFilterChip(this)">&times;</button>
-            </div>
-        </div>
-
-        <!-- PRODUCT LIST SECTION -->
-        <h2 class="section-title"><i class="fas fa-star" style="color: #f59e0b;"></i> ĐIỆN THOẠI NỔI BẬT NHẤT</h2>
-        <div class="product-grid" id="productGrid">
-            <!-- Render từ JS -->
-        </div>
-    </div>
-
-    <!-- FOOTER: THÔNG TIN LIÊN HỆ -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-col">
-                <h4>Về i6 Mobile</h4>
-                <p>Hệ thống bán lẻ điện thoại di động chính hãng, uy tín hàng đầu. Cam kết chất lượng sản phẩm tốt nhất với mức giá cạnh tranh cùng chính sách bảo hành dài hạn.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Thông Tin Liên Hệ</h4>
-                <p><i class="fas fa-map-marker-alt"></i> <strong>Khu vực hiển thị:</strong> <span id="footerLocation">Hà Nội</span></p>
-                <p><i class="fas fa-phone-alt"></i> <strong>Hotline bán hàng:</strong> 1900.5338 (8:00 - 21:30)</p>
-                <p><i class="fas fa-envelope"></i> <strong>Email hỗ trợ:</strong> hung.nguyen.hn0610@gmail.com</p>
-            </div>
-            <div class="footer-col">
-                <h4>Hỗ Trợ Khách Hàng</h4>
-                <p><i class="fas fa-chevron-right" style="font-size:10px;"></i> Hướng dẫn mua trả góp 0%</p>
-                <p><i class="fas fa-chevron-right" style="font-size:10px;"></i> Chính sách bảo hành & đổi trả</p>
-                <p><i class="fas fa-chevron-right" style="font-size:10px;"></i> Tra cứu bảo hành sửa chữa</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            &copy; 2026 i6 Mobile. 36 Xuân Hà, Tổ 2, Xuân Mai, Hà Nội.
-        </div>
-    </footer>
-
-    <!-- MODAL ĐẶT HÀNG -->
-    <div class="modal-overlay" id="checkoutModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeCheckoutModal()">&times;</button>
-            <h2 style="margin-bottom: 15px; color: #0284c7;">Xác Nhận Đặt Hàng / Trả Góp</h2>
-            <div id="checkoutProductInfo" style="margin-bottom: 15px; font-weight: bold; background: #f9f9f9; padding: 10px; border-radius: 6px;"></div>
-            <form id="orderForm" onsubmit="submitOrder(event)">
-                <div class="form-group">
-                    <label>Họ và tên người nhận:</label>
-                    <input type="text" id="cusName" required placeholder="Nhập họ tên đầy đủ...">
-                </div>
-                <div class="form-group">
-                    <label>Số điện thoại liên hệ:</label>
-                    <input type="tel" id="cusPhone" required placeholder="Nhập số điện thoại...">
-                </div>
-                <div class="form-group">
-                    <label>Địa chỉ nhận hàng:</label>
-                    <textarea id="cusAddress" required placeholder="Số nhà, đường, phường/xã, quận/huyện..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Hình thức thanh toán:</label>
-                    <select id="cusPayment">
-                        <option value="Thanh toán khi nhận hàng (COD)">Thanh toán khi nhận hàng (COD)</option>
-                        <option value="Trả góp 0% lãi suất (Duyệt online)">Trả góp 0% lãi suất (Duyệt online)</option>
-                        <option value="Chuyển khoản ngân hàng trước">Chuyển khoản ngân hàng trước</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">HOÀN TẤT ĐẶT HÀNG</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- SCRIPT CHÍNH -->
-    <script>
-        function toggleLocationMenu(e) {
-            e.stopPropagation();
-            const menu = document.getElementById('locationMenu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function selectLocation(city) {
-            document.getElementById('currentLocationText').innerText = city;
-            document.getElementById('footerLocation').innerText = city;
-            document.getElementById('locationMenu').style.display = 'none';
-        }
-
-        window.addEventListener('click', () => {
-            document.getElementById('locationMenu').style.display = 'none';
-        });
-
-        function removeFilterChip(btn) {
-            const chip = btn.closest('.filter-tag-chip');
-            if (chip) chip.remove();
-        }
-
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
-
-        let products = [];
-        let currentCustomerPhone = localStorage.getItem('i6_current_phone') || '';
-        let currentSelectedProduct = null;
-
-        function fetchProductsFromSheet() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm từ hệ thống...</div>';
-            
-            fetch(SCRIPT_URL)
-                .then(response => response.json())
-                .then(data => {
-                    products = data;
-                    renderProducts();
-                })
-                .catch(err => {
-                    console.error('Lỗi tải dữ liệu:', err);
-                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #0284c7; font-weight: 600;">Không thể tải sản phẩm từ Google Sheets.</div>';
-                });
-        }
-
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'đ');
-        }
-
-        function getCustomerOrders() {
-            let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
-            if (!currentCustomerPhone) return [];
-            return allOrders.filter(o => o.phone === currentCustomerPhone);
-        }
-
-        function updateCartCount() {
-            let myOrders = getCustomerOrders();
-            document.getElementById('cartCount').innerText = myOrders.length;
-        }
-
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            
-            if (!products || products.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Chưa có sản phẩm nào được đăng bán trên hệ thống.</div>';
-                updateCartCount();
-                return;
-            }
-
-            products.forEach(p => {
-                grid.innerHTML += `
-                    <div class="product-card">
-                        <div>
-                            <img src="${p.img}" class="product-img" alt="${p.name}">
-                            <div class="product-name">${p.name}</div>
-                            <div class="product-price-box">
-                                <span class="card-price">${formatCurrency(p.price)}</span>
-                                <span class="card-old-price">${formatCurrency(p.oldPrice)}</span>
-                            </div>
-                            <div class="card-promo"><i class="fas fa-gift"></i> ${p.promo}</div>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-card-buy" onclick="openCheckout('${p.name}', ${p.price})">MUA NGAY</button>
-                            <button class="btn-card-installment" onclick="openCheckout('Trả góp: ${p.name}', ${p.price})">TRẢ GÓP 0%</button>
-                        </div>
-                    </div>
-                `;
-            });
-            updateCartCount();
-        }
-
-        function handleSearch(keyword) {
-            const box = document.getElementById('searchSuggestions');
-            if (!keyword.trim()) {
-                box.style.display = 'none';
-                return;
-            }
-            const filtered = products.filter(p => p.name.toLowerCase().includes(keyword.toLowerCase()));
-            if (filtered.length === 0) {
-                box.style.display = 'none';
-                return;
-            }
-            box.innerHTML = '';
-            filtered.forEach(p => {
-                box.innerHTML += `
-                    <div class="suggestion-item" onclick="openCheckout('${p.name}', ${p.price})">
-                        <img src="${p.img}" alt="">
-                        <div>
-                            <div style="font-weight:700; font-size:13px;">${p.name}</div>
-                            <div style="color:#0284c7; font-weight:700; font-size:12px;">${formatCurrency(p.price)}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            box.style.display = 'block';
-        }
-
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-box')) {
-                document.getElementById('searchSuggestions').style.display = 'none';
-            }
-        });
-
-        function openCheckout(productName, price) {
-            currentSelectedProduct = { name: productName, price: price };
-            document.getElementById('checkoutProductInfo').innerHTML = `Sản phẩm: <span style="color:#0284c7">${productName}</span> - Giá: <span style="color:#0284c7">${formatCurrency(price)}</span>`;
-            document.getElementById('checkoutModal').style.display = 'flex';
-        }
-
-        function closeCheckoutModal() {
-            document.getElementById('checkoutModal').style.display = 'none';
-        }
-
-        function submitOrder(e) {
-            e.preventDefault();
-            const phone = document.getElementById('cusPhone').value.trim();
-            const name = document.getElementById('cusName').value.trim();
-            const address = document.getElementById('cusAddress').value.trim();
-            const payment = document.getElementById('cusPayment').value;
-
-            const formData = new URLSearchParams();
-            formData.append('type', 'order');
-            formData.append('id', 'DH' + Math.floor(1000 + Math.random() * 9000));
-            formData.append('product', currentSelectedProduct.name);
-            formData.append('price', currentSelectedProduct.price);
-            formData.append('name', name);
-            formData.append('phone', phone);
-            formData.append('address', address);
-            formData.append('payment', payment);
-            formData.append('date', new Date().toLocaleString('vi-VN'));
-
-            alert('Đang gửi đơn hàng lên hệ thống...');
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formData.toString()
-            })
-            .then(() => {
-                alert('Đặt hàng thành công! Đơn hàng của bạn đã được lưu vào hệ thống i6 Mobile.');
-                closeCheckoutModal();
-                currentCustomerPhone = phone;
-                localStorage.setItem('i6_current_phone', phone);
-                let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
-                allOrders.push({
-                    phone: phone,
-                    product: currentSelectedProduct.name,
-                    price: currentSelectedProduct.price,
-                    date: new Date().toLocaleString('vi-VN')
-                });
-                localStorage.setItem('i6_orders', JSON.stringify(allOrders));
-                updateCartCount();
-            })
-            .catch(err => {
-                console.error('Lỗi:', err);
-                alert('Có lỗi xảy ra khi gửi đơn hàng.');
-            });
-        }
-
-        window.onload = function() {
-            fetchProductsFromSheet();
-        };
-    </script>
-</body>
-</html>
+            background:
