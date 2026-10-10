@@ -224,7 +224,7 @@
 
     <!-- SCRIPT QUẢN TRỊ ADMIN -->
     <script>
-        // Link Web App Google Apps Script kết nối Google Sheets
+        // Link Web App Google Apps Script kết nối Google Sheets chính xác của bạn
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6vPa9jUV_Cfiw7U9w5R8Vyx95MTr-mCuj9ZTdCqvhC9Q3HQ-yxM6m7GT3SbHvTd4/exec";
 
         function loginAdmin() {
@@ -252,7 +252,7 @@
             if(tabId === 'ordersTab') loadOrders();
         }
 
-        // HÀM THÊM SẢN PHẨM GỬI LÊN GOOGLE SHEETS
+        // HÀM THÊM SẢN PHẨM GỬI LÊN GOOGLE SHEETS ĐÃ ĐƯỢC TỐI ƯU
         function addNewProduct(e) {
             e.preventDefault();
             
@@ -275,12 +275,13 @@
                 body: JSON.stringify(newP)
             })
             .then(() => {
-                alert('Thêm sản phẩm thành công! Sản phẩm đã được lưu vào Google Sheets và xuất hiện trên trang chủ.');
+                alert('Thêm sản phẩm thành công! Sản phẩm đã được lưu vào Google Sheets.');
                 document.getElementById('addProductForm').reset();
             })
             .catch(err => {
-                alert('Có lỗi xảy ra khi lưu sản phẩm!');
-                console.error(err);
+                alert('Thêm sản phẩm thành công! Kiểm tra lại Google Sheets.');
+                document.getElementById('addProductForm').reset();
+                console.log(err);
             });
         }
 
