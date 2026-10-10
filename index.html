@@ -67,7 +67,7 @@
             padding: 0 10px;
         }
 
-        /* LOGO I6MOBILE CELLPHONES STYLE */
+        /* LOGO I6MOBILE */
         .logo-cellphones-style {
             display: flex;
             align-items: center;
@@ -809,8 +809,8 @@
             document.getElementById('locationMenu').style.display = 'none';
         });
 
-        // 1. LINK GOOGLE APPS SCRIPT ĐỒNG BỘ GOOGLE SHEETS
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6vPa9jUV_Cfiw7U9w5R8Vyx95MTr-mCuj9ZTdCqvhC9Q3HQ-yxM6m7GT3SbHvTd4/exec";
+        // 1. LINK GOOGLE APPS SCRIPT ĐỒNG BỘ GOOGLE SHEETS MỚI NHẤT CỦA BẠN
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
         let products = [];
         let currentCustomerPhone = localStorage.getItem('i6_current_phone') || '';
@@ -819,7 +819,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6vPa9jUV_Cfiw7U9w5
         // 2. HÀM TẢI SẢN PHẨM TỪ GOOGLE SHEETS VỀ HIỂN THỊ
         function fetchProductsFromSheet() {
             const grid = document.getElementById('productGrid');
-            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm...</div>';
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm từ hệ thống...</div>';
             
             fetch(SCRIPT_URL)
                 .then(response => response.json())
@@ -829,7 +829,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6vPa9jUV_Cfiw7U9w5
                 })
                 .catch(err => {
                     console.error('Lỗi tải dữ liệu:', err);
-                    renderProducts();
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #d70018; font-weight: 600;">Không thể tải sản phẩm từ Google Sheets.</div>';
                 });
         }
 
@@ -971,7 +971,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6vPa9jUV_Cfiw7U9w5
             }
         }
 
-        // TỰ ĐỘNG TẢI DỮ LIỆU TỪ GOOGLE SHEETS KHI KHÁCH VÀO WEB
+        // TỰ ĐỘNG TẢI DỮ LIỆU TỪ GOOGLE SHEETS KHI MỞ TRANG WEB
         window.onload = function() {
             fetchProductsFromSheet();
             updateCartCount();
