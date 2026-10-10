@@ -67,7 +67,7 @@
             padding: 0 10px;
         }
 
-        /* LOGO CELLPHONES STYLE (ĐÃ BỎ CHỮ S) */
+        /* LOGO CELLPHONES STYLE (ĐÃ BỎ CHỮ S TRONG Ô) */
         .logo-cellphones-style {
             display: flex;
             align-items: center;
@@ -276,15 +276,6 @@
         .sidebar-menu li a:hover {
             background-color: #fef2f2;
             color: #d70018;
-        }
-
-        .badge-tag {
-            background: #fee2e2;
-            color: #dc2626;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
         }
 
         /* MAIN BANNER */
@@ -663,7 +654,7 @@
     <!-- MAIN HEADER -->
     <header class="header">
         <div class="header-container">
-            <!-- LOGO I6MOBILE (ĐÃ BỎ CHỮ S TRONG Ô) -->
+            <!-- LOGO I6MOBILE -->
             <a href="index.html" class="logo-cellphones-style">
                 <span class="brand-text">i6mobile</span>
                 <span class="brand-box"></span>
@@ -704,7 +695,7 @@
                     <li><a href="#"><span><i class="fas fa-mobile"></i> Samsung Galaxy</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
                     <li><a href="#"><span><i class="fas fa-bolt"></i> Xiaomi</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
                     <li><a href="#"><span><i class="fas fa-camera"></i> OPPO</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                                   </ul>
+                </ul>
             </aside>
 
             <main class="main-banner">
@@ -764,7 +755,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 i6 Mobile.36 Xuân Hà, Tổ 2, Xuân Mai, hà Nội.
+            &copy; 2026 i6 Mobile. 36 Xuân Hà, Tổ 2, Xuân Mai, Hà Nội.
         </div>
     </footer>
 
@@ -817,24 +808,40 @@
             document.getElementById('locationMenu').style.display = 'none';
         });
 
-        let defaultProducts = [
-            { id: 1, name: "iPhone 18 Pro Max 1TB", price: 34990000, oldPrice: 39990000, img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800", promo: "Tặng củ sạc 45W • Trả góp 0%" },
-            { id: 2, name: "iPhone 17 Pro 256GB", price: 26990000, oldPrice: 29990000, img: "https://images.unsplash.com/photo-1695048065451-460455648d84?auto=format&fit=crop&q=80&w=800", promo: "Giảm ngay 1 triệu khi thu cũ đổi mới" },
-            { id: 3, name: "Samsung Galaxy S26 Ultra", price: 27990000, oldPrice: 31990000, img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800", promo: "Trả góp 0% lãi suất qua thẻ tín dụng" },
-            { id: 4, name: "Xiaomi 15 Ultra 5G", price: 19990000, oldPrice: 22990000, img: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=800", promo: "Bảo hành 2 năm chính hãng" }
-        ];
-
-        let products = JSON.parse(localStorage.getItem('i6_products')) || defaultProducts;
-        let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+        // 1. Chỉ lấy sản phẩm do Admin thêm (mặc định mảng rỗng nếu chưa có)
+        let products = JSON.parse(localStorage.getItem('i6_products')) || [];
+        
+        // 2. Lấy số điện thoại của thiết bị hiện tại để phân tách giỏ hàng riêng
+        let currentCustomerPhone = localStorage.getItem('i6_current_phone') || '';
         let currentSelectedProduct = null;
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'đ');
         }
 
+        // 3. Hàm lọc đơn hàng riêng của số điện thoại hiện tại
+        function getCustomerOrders() {
+            let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            if (!currentCustomerPhone) return [];
+            return allOrders.filter(o => o.phone === currentCustomerPhone);
+        }
+
+        // 4. Cập nhật số lượng giỏ hàng riêng cho khách
+        function updateCartCount() {
+            let myOrders = getCustomerOrders();
+            document.getElementById('cartCount').innerText = myOrders.length;
+        }
+
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
+            
+            if (products.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Chưa có sản phẩm nào được đăng bán trên hệ thống.</div>';
+                updateCartCount();
+                return;
+            }
+
             products.forEach(p => {
                 grid.innerHTML += `
                     <div class="product-card">
@@ -854,7 +861,7 @@
                     </div>
                 `;
             });
-            document.getElementById('cartCount').innerText = orders.length;
+            updateCartCount();
         }
 
         function handleSearch(keyword) {
@@ -901,31 +908,58 @@
 
         function submitOrder(e) {
             e.preventDefault();
+            const phone = document.getElementById('cusPhone').value.trim();
+            const name = document.getElementById('cusName').value.trim();
+            const address = document.getElementById('cusAddress').value.trim();
+            const payment = document.getElementById('cusPayment').value;
+
             const newOrder = {
                 id: 'DH' + Math.floor(1000 + Math.random() * 9000),
                 product: currentSelectedProduct.name,
                 price: currentSelectedProduct.price,
-                name: document.getElementById('cusName').value,
-                phone: document.getElementById('cusPhone').value,
-                address: document.getElementById('cusAddress').value,
-                payment: document.getElementById('cusPayment').value,
+                name: name,
+                phone: phone,
+                address: address,
+                payment: payment,
                 date: new Date().toLocaleString('vi-VN')
             };
 
-            orders.unshift(newOrder);
-            localStorage.setItem('i6_orders', JSON.stringify(orders));
-            alert('Đặt hàng thành công! Đơn hàng của bạn đã được gửi về bộ phận quản lý của i6 Mobile.');
+            // Ghi nhớ SĐT của khách trên thiết bị này
+            currentCustomerPhone = phone;
+            localStorage.setItem('i6_current_phone', phone);
+
+            // Lưu vào kho chung để Admin trang admin.html quản lý
+            let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            allOrders.unshift(newOrder);
+            localStorage.setItem('i6_orders', JSON.stringify(allOrders));
+
+            alert('Đặt hàng thành công! Đơn hàng của bạn đã được gửi về hệ thống i6 Mobile.');
             closeCheckoutModal();
             document.getElementById('orderForm').reset();
-            renderProducts();
+            updateCartCount();
         }
 
+        // Khi khách bấm xem giỏ hàng
         function openCartQuickView() {
-            alert('Bạn có ' + orders.length + ' đơn hàng đã đặt trong phiên làm việc này.');
+            let myOrders = getCustomerOrders();
+            if (myOrders.length === 0) {
+                let phoneInput = prompt("Chưa có đơn hàng nào trên thiết bị này. Nhập số điện thoại của bạn để tra cứu các đơn đã đặt:");
+                if (phoneInput && phoneInput.trim() !== '') {
+                    currentCustomerPhone = phoneInput.trim();
+                    localStorage.setItem('i6_current_phone', currentCustomerPhone);
+                    let checkedOrders = getCustomerOrders();
+                    alert(`Tìm thấy ${checkedOrders.length} đơn hàng cho SĐT: ${currentCustomerPhone}`);
+                    updateCartCount();
+                }
+            } else {
+                let listText = myOrders.map(o => `- Mã đơn ${o.id}: ${o.product} (${formatCurrency(o.price)})`).join('\n');
+                alert(`Danh sách đơn hàng của bạn (${currentCustomerPhone}):\n\n` + listText);
+            }
         }
 
         window.onload = function() {
             renderProducts();
+            updateCartCount();
         };
     </script>
 </body>
