@@ -67,7 +67,7 @@
             padding: 0 10px;
         }
 
-        /* LOGO CELLPHONES STYLE (ĐÃ BỎ CHỮ S TRONG Ô) */
+        /* LOGO I6MOBILE CELLPHONES STYLE */
         .logo-cellphones-style {
             display: flex;
             align-items: center;
@@ -523,7 +523,7 @@
             cursor: pointer;
         }
 
-        /* 5. FOOTER (THÔNG TIN LIÊN HỆ) */
+        /* 5. FOOTER */
         .footer {
             background: #ffffff;
             margin-top: 40px;
@@ -791,6 +791,7 @@
         </div>
     </div>
 
+    <!-- SCRIPT CHÍNH -->
     <script>
         function toggleLocationMenu(e) {
             e.stopPropagation();
@@ -807,46 +808,42 @@
         window.addEventListener('click', () => {
             document.getElementById('locationMenu').style.display = 'none';
         });
-// Thay link bên dưới bằng link Web App bạn copy từ Google Apps Script
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2gVvyNdp4xcsQVbM5eaVV4Z1r4vGHocz-BwWYgw/dev";
 
-function fetchProductsFromSheet() {
-    const grid = document.getElementById('productGrid');
-    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm...</div>';
-    
-    fetch(SCRIPT_URL)
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            renderProducts();
-        })
-        .catch(err => {
-            console.error('Lỗi tải dữ liệu:', err);
-            renderProducts();
-        });
-}
+        // 1. LINK GOOGLE APPS SCRIPT ĐỒNG BỘ GOOGLE SHEETS
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2gVvyNdp4xcsQVbM5eaVV4Z1r4vGHocz-BwWYgw/exec";
 
-// Giữ lại khai báo mảng sản phẩm gốc để phòng hờ khi mất mạng
-let products = [];
-        // 1. Chỉ lấy sản phẩm do Admin thêm (mặc định mảng rỗng nếu chưa có)
-        let products = JSON.parse(localStorage.getItem('i6_products')) || [];
-        
-        // 2. Lấy số điện thoại của thiết bị hiện tại để phân tách giỏ hàng riêng
+        let products = [];
         let currentCustomerPhone = localStorage.getItem('i6_current_phone') || '';
         let currentSelectedProduct = null;
+
+        // 2. HÀM TẢI SẢN PHẨM TỪ GOOGLE SHEETS VỀ HIỂN THỊ
+        function fetchProductsFromSheet() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Đang tải danh sách sản phẩm...</div>';
+            
+            fetch(SCRIPT_URL)
+                .then(response => response.json())
+                .then(data => {
+                    products = data;
+                    renderProducts();
+                })
+                .catch(err => {
+                    console.error('Lỗi tải dữ liệu:', err);
+                    renderProducts();
+                });
+        }
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'đ');
         }
 
-        // 3. Hàm lọc đơn hàng riêng của số điện thoại hiện tại
+        // 3. LỌC ĐƠN HÀNG THEO SỐ ĐIỆN THOẠI KHÁCH HÀNG
         function getCustomerOrders() {
             let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             if (!currentCustomerPhone) return [];
             return allOrders.filter(o => o.phone === currentCustomerPhone);
         }
 
-        // 4. Cập nhật số lượng giỏ hàng riêng cho khách
         function updateCartCount() {
             let myOrders = getCustomerOrders();
             document.getElementById('cartCount').innerText = myOrders.length;
@@ -856,7 +853,7 @@ let products = [];
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             
-            if (products.length === 0) {
+            if (!products || products.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: 600;">Chưa có sản phẩm nào được đăng bán trên hệ thống.</div>';
                 updateCartCount();
                 return;
@@ -944,11 +941,9 @@ let products = [];
                 date: new Date().toLocaleString('vi-VN')
             };
 
-            // Ghi nhớ SĐT của khách trên thiết bị này
             currentCustomerPhone = phone;
             localStorage.setItem('i6_current_phone', phone);
 
-            // Lưu vào kho chung để Admin trang admin.html quản lý
             let allOrders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             allOrders.unshift(newOrder);
             localStorage.setItem('i6_orders', JSON.stringify(allOrders));
@@ -959,7 +954,6 @@ let products = [];
             updateCartCount();
         }
 
-        // Khi khách bấm xem giỏ hàng
         function openCartQuickView() {
             let myOrders = getCustomerOrders();
             if (myOrders.length === 0) {
@@ -977,10 +971,11 @@ let products = [];
             }
         }
 
+        // TỰ ĐỘNG TẢI DỮ LIỆU TỪ GOOGLE SHEETS KHI KHÁCH VÀO WEB
         window.onload = function() {
-    fetchProductsFromSheet();
-    updateCartCount();
-};
+            fetchProductsFromSheet();
+            updateCartCount();
+        };
     </script>
 </body>
 </html>
