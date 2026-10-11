@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>i6 Mobile - Hệ Thống Bán Lẻ Điện Thoại Chính Hãng</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="URL_HINH_ANH_LOGO_CUA_BAN">
-    <link rel="shortcut icon" type="image/x-icon" href="URL_HINH_ANH_LOGO_CUA_BAN">
+    <!-- CHÈN LOGO VÀO CẠNH TÊN MIỀN TRÊN THẺ TRÌNH DUYỆT (FAVICON) -->
+    <!-- Thay URL_HINH_ANH_LOGO_CUA_BAN thành link ảnh logo của bạn -->
+    <link rel="icon" type="image/png" href="https://www.i6mobile.com/logo.jpg">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.i6mobile.com/logo.jpg">
 
     <!-- Font Awesome cho Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -75,20 +76,14 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            gap: 8px;
-        }
-
-        .logo-cellphones-style .brand-logo {
-            height: 36px;
-            width: auto;
-            object-fit: contain;
         }
 
         .logo-cellphones-style .brand-text {
             font-family: Arial, Helvetica, sans-serif;
             color: #ffffff;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
+            letter-spacing: -0.5px;
         }
 
         /* LOCATION DROPDOWN */
@@ -219,7 +214,7 @@
             background: #b91c1c;
         }
 
-        /* CONTAINER & HERO */
+        /* CONTAINER & HERO SECTION */
         .container {
             max-width: 1200px;
             margin: 15px auto;
@@ -228,13 +223,13 @@
 
         .hero-section {
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        /* SIDEBAR MENU */
+        /* 1. SIDEBAR TRÁI */
         .sidebar {
-            width: 220px;
+            width: 200px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -243,9 +238,9 @@
         }
 
         .sidebar-title {
-            padding: 12px 15px;
+            padding: 10px 12px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             border-bottom: 1px solid #f0f0f0;
             display: flex;
             align-items: center;
@@ -261,10 +256,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
+            padding: 8px 12px;
             color: #333;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             border-bottom: 1px solid #f8f8f8;
             transition: 0.2s;
         }
@@ -274,50 +269,175 @@
             color: #1d4ed8;
         }
 
-        /* --- KHUNG BANNER CHÍNH KHỚP MẪU --- */
-        .main-banner-wrapper {
+        /* 2. CỘT GIỮA: KHU VỰC BANNER THU NHỎ VỪA VẶN */
+        .hero-center-banner {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            min-width: 0;
         }
 
-        .banner-image-container {
-            width: 100%;
-            border-radius: 16px;
+        .banner-tabs-header {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .banner-tab-item {
+            flex: 1;
+            padding: 8px 6px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .banner-tab-item.active {
+            color: #dc2626;
+            border-bottom-color: #dc2626;
+            background: #fff1f2;
+        }
+
+        .banner-tab-item span {
+            display: block;
+            font-weight: 400;
+            color: #64748b;
+            font-size: 10px;
+        }
+
+        .main-banner-card {
+            background: white;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
         .banner-exact-img {
             width: 100%;
-            height: auto;
-            display: block;
+            max-height: 250px;
             object-fit: cover;
-            border-radius: 16px;
+            display: block;
         }
 
-        /* --- Ô TRẢ GÓP BAO NỢ XẤU (MÀU ĐỎ CHỮ TRẮNG) --- */
+        .sub-banners-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .sub-banner-item {
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #1e293b;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .sub-banner-item span {
+            display: block;
+            font-size: 10px;
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        /* Ô TRẢ GÓP BAO NỢ XẤU (ĐỎ CHỮ TRẮNG) */
         .installment-box-red {
             background: #dc2626 !important;
-            border: 1px solid #b91c1c !important;
             border-radius: 8px;
-            padding: 12px 16px;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+            padding: 8px 12px;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
         }
 
         .installment-box-red .inst-title {
             color: #ffffff !important;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .installment-box-red .inst-title i {
-            color: #fef08a; /* Dấu tích vàng nổi bật */
+            color: #fef08a;
+        }
+
+        /* 3. CỘT PHẢI: CHÀO MỪNG & ƯU ĐÃI */
+        .hero-right-sidebar {
+            width: 230px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .member-welcome-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            font-size: 12px;
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .member-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ffe4e6;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .promo-list-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            flex: 1;
+        }
+
+        .promo-list-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 4px;
+        }
+
+        .promo-item-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #334155;
+            text-decoration: none;
+            padding: 5px 0;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
+        .promo-item-link i {
+            color: #dc2626;
+            font-size: 10px;
         }
 
         /* PRODUCT GRID */
@@ -536,7 +656,6 @@
             color: #dc2626;
         }
 
-        /* Gallery Ảnh trong Modal Chi Tiết */
         .product-detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -664,8 +783,8 @@
     <!-- MAIN HEADER -->
     <header class="header">
         <div class="header-container">
+            <!-- Đã loại bỏ ảnh logo vuông, chỉ giữ chữ thương hiệu i6mobile -->
             <a href="index.html" class="logo-cellphones-style">
-                <img src="https://www.i6mobile.com/logo.jpg" alt="i6 Mobile Logo" class="brand-logo">
                 <span class="brand-text">i6mobile</span>
             </a>
 
@@ -697,30 +816,50 @@
     <div class="container">
         <!-- HERO SECTION -->
         <div class="hero-section">
-            <aside class="sidebar">
-                <div class="sidebar-title"><i class="fas fa-bars"></i> Danh mục sản phẩm</div>
-                <ul class="sidebar-menu">
-                    <li><a href="#"><span><i class="fab fa-apple" style="color:#1d4ed8"></i> iPhone (Apple)</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                    <li><a href="#"><span><i class="fas fa-mobile" style="color:#1d4ed8"></i> Samsung Galaxy</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                    <li><a href="#"><span><i class="fas fa-bolt" style="color:#1d4ed8"></i> Xiaomi</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                    <li><a href="#"><span><i class="fas fa-camera" style="color:#1d4ed8"></i> OPPO</span> <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a></li>
-                </ul>
-            </aside>
 
-            <!-- KHU VỰC BANNER CHÍNH KHỐI MẪU -->
-            <main class="main-banner-wrapper">
-                <div class="banner-image-container">
-                    <!-- Thay URL_LINK_ANH_BANNER_CUA_BAN bằng link ảnh banner thiết kế của bạn -->
-                    <img src="https://www.i6mobile.com/san-pham/18pro.jpg" class="banner-exact-img">
+            <!-- CỘT 2: BANNER CHÍNH THU NHỎ VỪA VẶN -->
+
+                <div class="main-banner-card">
+                    <img src="https://www.i6mobile.com/san-pham/18pro.jpg" alt="iPhone 18 Pro Banner" class="banner-exact-img">
                 </div>
 
-                <!-- Ô TRẢ GÓP BAO NỢ XẤU (MÀU ĐỎ CHỮ TRẮNG NỔI BẬT) -->
+                <div class="sub-banners-grid">
+                    <div class="sub-banner-item">Mac Studio <span>M5 Max cực khủng</span></div>
+                    <div class="sub-banner-item">Galaxy A57 5G <span>Giảm đến 50%</span></div>
+                    <div class="sub-banner-item">LAPTOP GAMING <span>Giảm thêm 1.3tr</span></div>
+                    <div class="sub-banner-item">TIVI 4K HDR <span>Giá xả kho</span></div>
+                </div>
+
+                <!-- Ô TRẢ GÓP BAO NỢ XẤU (ĐỎ CHỮ TRẮNG) -->
                 <div class="installment-box-red">
                     <div class="inst-title">
                         <i class="fas fa-check-circle"></i> Trả góp 0% - Trả góp bao nợ xấu
                     </div>
                 </div>
             </main>
+
+            <!-- CỘT 3: CỘT THÔNG TIN THÀNH VIÊN & ƯU ĐÃI BÊN PHẢI -->
+            <aside class="hero-right-sidebar">
+                <div class="member-welcome-card">
+                    <div class="member-header">
+                        <div class="member-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <strong>Chào mừng bạn đến với i6 Mobile</strong>
+                            <div style="font-size: 10px; color: #64748b;">Nhập hội thành viên để nhận ưu đãi</div>
+                        </div>
+                    </div>
+                    <button class="btn-submit" style="padding: 6px; font-size: 11px; margin-top: 5px;">ĐĂNG NHẬP / ĐĂNG KÝ</button>
+                </div>
+
+                <div class="promo-list-card">
+                    <div class="promo-list-title"><i class="fas fa-gift" style="color:#dc2626;"></i> Ưu đãi nổi bật</div>
+                    <a href="#" class="promo-item-link"><i class="fas fa-caret-right"></i> Học sinh sinh viên giảm 5%</a>
+                    <a href="#" class="promo-item-link"><i class="fas fa-caret-right"></i> Thu cũ trợ giá đến 5 triệu</a>
+                    <a href="#" class="promo-item-link"><i class="fas fa-caret-right"></i> Mua phụ kiện kèm máy giảm 30%</a>
+                    <a href="#" class="promo-item-link"><i class="fas fa-caret-right"></i> Khách hàng doanh nghiệp (B2B)</a>
+                </div>
+            </aside>
+
         </div>
 
         <!-- PRODUCT LIST SECTION -->
