@@ -79,7 +79,7 @@
 
         .logo-cellphones-style .brand-text {
             font-family: Arial, Helvetica, sans-serif;
-            color: #facc15; /* Đã đổi thành màu vàng nổi bật */
+            color: #facc15;
             font-size: 28px;
             font-weight: 900;
             letter-spacing: -0.5px;
@@ -234,7 +234,6 @@
             margin-bottom: 20px;
         }
 
-        /* 1. SIDEBAR TRÁI */
         .sidebar {
             width: 210px;
             background: white;
@@ -276,7 +275,6 @@
             color: #1d4ed8;
         }
 
-        /* 2. CỘT GIỮA: BANNER CHÍNH VÀ Ô TRẢ GÓP BÊN DƯỚI */
         .hero-center-banner {
             flex: 1;
             display: flex;
@@ -494,7 +492,7 @@
             color: #94a3b8;
         }
 
-        /* MODAL */
+        /* MODAL COMMON */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -508,10 +506,10 @@
             z-index: 2000;
         }
 
-        .modal-content, .modal-detail-content {
+        .modal-content {
             background: white;
             width: 100%;
-            max-width: 750px;
+            max-width: 500px;
             border-radius: 12px;
             padding: 25px;
             position: relative;
@@ -519,8 +517,15 @@
             overflow-y: auto;
         }
 
-        .modal-content {
-            max-width: 500px;
+        .modal-detail-content {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-close {
@@ -572,6 +577,62 @@
 
         .btn-submit:hover {
             background: #b91c1c;
+        }
+
+        /* PRODUCT DETAIL GALLERY STYLES */
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .detail-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .main-image-box {
+            width: 100%;
+            height: 280px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .main-image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .thumbnail-list {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .thumbnail-item {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            object-fit: contain;
+            padding: 3px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .thumbnail-item.active {
+            border-color: #1d4ed8;
         }
     </style>
 </head>
@@ -638,8 +699,7 @@
 
             <main class="hero-center-banner">
                 <div class="main-banner-card">
-                    <!-- Thay link ảnh banner của bạn vào đây -->
-                    <img src="https://www.i6mobile.com/baner.png">
+                    <img src="https://www.i6mobile.com/baner.jpg" class="banner-exact-img">
                 </div>
 
                 <div class="installment-box-red">
@@ -655,6 +715,36 @@
         <div class="product-grid" id="productGrid"></div>
     </div>
 
+    <!-- MODAL XEM CHI TIẾT SẢN PHẨM (ALBUM HÌNH ẢNH) -->
+    <div class="modal-overlay" id="productDetailModal">
+        <div class="modal-detail-content">
+            <button class="modal-close" onclick="closeProductDetailModal()">&times;</button>
+            <div class="detail-layout">
+                <div>
+                    <div class="main-image-box">
+                        <img id="detailMainImg" src="" alt="Sản phẩm chính">
+                    </div>
+                    <div class="thumbnail-list" id="detailThumbnailList"></div>
+                </div>
+                <div>
+                    <h2 id="detailName" style="font-size: 20px; color: #1e293b; margin-bottom: 10px;"></h2>
+                    <div style="margin-bottom: 15px;">
+                        <span id="detailPrice" style="font-size: 22px; font-weight: 800; color: #dc2626;"></span>
+                        <span id="detailOldPrice" style="font-size: 14px; color: #888; text-decoration: line-through; margin-left: 8px;"></span>
+                    </div>
+                    <div id="detailPromo" style="background: #fff1f2; border: 1px solid #fecdd3; color: #9f1239; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 15px;"></div>
+                    <p style="font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 20px;" id="detailDesc">
+                        Sản phẩm chính hãng đầy đủ phụ kiện, bảo hành 12 tháng, 1 đổi 1 trong vòng 30 ngày.
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-card-buy" style="padding: 12px; font-size: 14px;" id="btnDetailBuy">THÊM VÀO GIỎ HÀNG</button>
+                        <button class="btn-card-installment" style="padding: 12px; font-size: 14px;" id="btnDetailInstallment">MUA TRẢ GÓP 0%</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL ĐẶT HÀNG -->
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-content">
@@ -667,7 +757,7 @@
                     <input type="text" id="cusName" required placeholder="Nhập họ tên đầy đủ...">
                 </div>
                 <div class="form-group">
-                    <label>Số điện thoại liên hệ:</label>
+                    <label>Số điện thoại liên hệ (Dùng để quản lý giỏ hàng riêng):</label>
                     <input type="tel" id="cusPhone" required placeholder="Nhập số điện thoại...">
                 </div>
                 <div class="form-group">
@@ -729,7 +819,35 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
         let products = [];
-        let currentCustomerPhone = localStorage.getItem('i6_current_phone') || '';
+        
+        /* QUẢN LÝ GIỎ HÀNG PHÂN BIỆT THEO SĐT */
+        function getCurrentUserPhone() {
+            return localStorage.getItem('i6_current_phone') || '';
+        }
+
+        function getCart() {
+            const phone = getCurrentUserPhone();
+            if (!phone) return [];
+            try {
+                return JSON.parse(localStorage.getItem('i6_cart_' + phone)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            const phone = getCurrentUserPhone();
+            if (phone) {
+                localStorage.setItem('i6_cart_' + phone, JSON.stringify(cart));
+                updateCartCount();
+            }
+        }
+
+        function updateCartCount() {
+            const cart = getCart();
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').innerText = totalCount;
+        }
 
         function fetchProductsFromSheet() {
             const grid = document.getElementById('productGrid');
@@ -740,6 +858,7 @@
                 .then(data => {
                     products = data;
                     renderProducts();
+                    updateCartCount();
                 })
                 .catch(err => {
                     console.error('Lỗi tải dữ liệu:', err);
@@ -764,10 +883,10 @@
                 grid.innerHTML += `
                     <div class="product-card">
                         <div>
-                            <div class="product-img-wrapper">
+                            <div class="product-img-wrapper" onclick="openProductDetail(${index})">
                                 <img src="${p.img}" class="product-img" alt="${p.name}">
                             </div>
-                            <div class="product-name">${p.name}</div>
+                            <div class="product-name" onclick="openProductDetail(${index})">${p.name}</div>
                             <div class="product-price-box">
                                 <span class="card-price">${formatCurrency(p.price)}</span>
                                 <span class="card-old-price">${formatCurrency(p.oldPrice || p.price)}</span>
@@ -775,12 +894,69 @@
                             <div class="card-promo"><i class="fas fa-gift"></i> ${p.promo || 'Ưu đãi quà tặng đặc biệt'}</div>
                         </div>
                         <div class="card-actions">
-                            <button class="btn-card-buy" onclick="openCheckout('${p.name}', ${p.price})">MUA NGAY</button>
-                            <button class="btn-card-installment" onclick="openCheckout('Trả góp: ${p.name}', ${p.price})">TRẢ GÓP 0%</button>
+                            <button class="btn-card-buy" onclick="addToCartAndBuy('${p.name}', ${p.price})">MUA NGAY</button>
+                            <button class="btn-card-installment" onclick="addToCartAndBuy('Trả góp: ${p.name}', ${p.price})">TRẢ GÓP 0%</button>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        /* TÍNH NĂNG XEM CHI TIẾT SẢN PHẨM & BỘ ẢNH ALBUM */
+        function openProductDetail(index) {
+            const p = products[index];
+            if (!p) return;
+
+            document.getElementById('detailName').innerText = p.name;
+            document.getElementById('detailPrice').innerText = formatCurrency(p.price);
+            document.getElementById('detailOldPrice').innerText = formatCurrency(p.oldPrice || p.price);
+            document.getElementById('detailPromo').innerHTML = `<i class="fas fa-gift"></i> ${p.promo || 'Ưu đãi quà tặng đặc biệt'}`;
+            
+            // Xử lý danh sách ảnh (Lấy p.images nếu có, hoặc dùng tạm p.img)
+            let imageList = [];
+            if (p.images) {
+                if (Array.isArray(p.images)) {
+                    imageList = p.images;
+                } else if (typeof p.images === 'string') {
+                    imageList = p.images.split(',').map(s => s.trim());
+                }
+            } else if (p.img) {
+                imageList = [p.img];
+            }
+
+            const mainImg = document.getElementById('detailMainImg');
+            mainImg.src = imageList[0] || '';
+
+            const thumbContainer = document.getElementById('detailThumbnailList');
+            thumbContainer.innerHTML = '';
+
+            imageList.forEach((imgUrl, idx) => {
+                thumbContainer.innerHTML += `
+                    <img src="${imgUrl}" class="thumbnail-item ${idx === 0 ? 'active' : ''}" onclick="changeMainDetailImage('${imgUrl}', this)">
+                `;
+            });
+
+            document.getElementById('btnDetailBuy').onclick = function() {
+                closeProductDetailModal();
+                addToCartAndBuy(p.name, p.price);
+            };
+
+            document.getElementById('btnDetailInstallment').onclick = function() {
+                closeProductDetailModal();
+                addToCartAndBuy('Trả góp: ' + p.name, p.price);
+            };
+
+            document.getElementById('productDetailModal').style.display = 'flex';
+        }
+
+        function changeMainDetailImage(imgUrl, el) {
+            document.getElementById('detailMainImg').src = imgUrl;
+            document.querySelectorAll('.thumbnail-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function closeProductDetailModal() {
+            document.getElementById('productDetailModal').style.display = 'none';
         }
 
         function handleSearch(keyword) {
@@ -791,7 +967,7 @@
             }
 
             const cleanKey = keyword.toLowerCase().trim();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(cleanKey));
+            const filtered = products.map((p, idx) => ({...p, originalIndex: idx})).filter(p => p.name.toLowerCase().includes(cleanKey));
 
             if (filtered.length === 0) {
                 box.innerHTML = `<div style="padding: 12px; font-size: 13px; color: #64748b; text-align: center;">Không tìm thấy sản phẩm phù hợp</div>`;
@@ -802,7 +978,7 @@
             box.innerHTML = '';
             filtered.forEach(p => {
                 box.innerHTML += `
-                    <div class="suggestion-item" onclick="openCheckout('${p.name}', ${p.price})">
+                    <div class="suggestion-item" onclick="openProductDetail(${p.originalIndex}); document.getElementById('searchSuggestions').style.display = 'none';">
                         <img src="${p.img}" alt="${p.name}">
                         <div style="flex: 1; min-width: 0;">
                             <div style="font-weight: 700; font-size: 13px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name}</div>
@@ -824,9 +1000,64 @@
             }
         });
 
+        /* GIỎ HÀNG & MUA HÀNG */
+        function addToCartAndBuy(productName, price) {
+            document.getElementById('searchSuggestions').style.display = 'none';
+            
+            const phone = getCurrentUserPhone();
+            if (!phone) {
+                alert('Vui lòng nhập số điện thoại để hệ thống lưu giỏ hàng riêng cho bạn.');
+                openCheckout(productName, price);
+                return;
+            }
+
+            let cart = getCart();
+            let existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: productName, price: price, quantity: 1 });
+            }
+            saveCart(cart);
+            alert(`Đã thêm "${productName}" vào giỏ hàng!`);
+        }
+
+        function openCartQuickView() {
+            const phone = getCurrentUserPhone();
+            if (!phone) {
+                alert('Bạn chưa lưu số điện thoại trên thiết bị này. Hãy bấm mua 1 sản phẩm bất kỳ để nhập số điện thoại định danh.');
+                openCheckout('Sản phẩm bất kỳ', 0);
+                return;
+            }
+
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Giỏ hàng của bạn đang trống.');
+                return;
+            }
+
+            let totalMoney = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let details = cart.map(item => `- ${item.name} x${item.quantity} (${formatCurrency(item.price * item.quantity)})`).join('\n');
+            
+            if (confirm(`GIỎ HÀNG CỦA BẠN (SĐT: ${phone}):\n\n${details}\n\nTổng tiền: ${formatCurrency(totalMoney)}\n\nBạn có muốn tiến hành đặt toàn bộ giỏ hàng này không?`)) {
+                openCheckout(`Giỏ hàng (${cart.length} sản phẩm)`, totalMoney);
+            }
+        }
+
         function openCheckout(productName, price) {
             document.getElementById('searchSuggestions').style.display = 'none';
-            document.getElementById('checkoutProductInfo').innerHTML = `Sản phẩm: <span style="color:#1d4ed8">${productName}</span> - Giá: <span style="color:#dc2626">${formatCurrency(price)}</span>`;
+            document.getElementById('checkoutProductInfo').innerHTML = `Sản phẩm: <span style="color:#1d4ed8">${productName}</span> - Tổng tiền: <span style="color:#dc2626">${formatCurrency(price)}</span>`;
+            
+            if (localStorage.getItem('i6_current_name')) {
+                document.getElementById('cusName').value = localStorage.getItem('i6_current_name');
+            }
+            if (localStorage.getItem('i6_current_phone')) {
+                document.getElementById('cusPhone').value = localStorage.getItem('i6_current_phone');
+            }
+            if (localStorage.getItem('i6_current_address')) {
+                document.getElementById('cusAddress').value = localStorage.getItem('i6_current_address');
+            }
+
             document.getElementById('checkoutModal').style.display = 'flex';
         }
 
@@ -836,7 +1067,18 @@
 
         function submitOrder(e) {
             e.preventDefault();
-            alert('Đặt hàng thành công! Cảm ơn bạn đã ủng hộ i6 Mobile.');
+            const name = document.getElementById('cusName').value.trim();
+            const phone = document.getElementById('cusPhone').value.trim();
+            const address = document.getElementById('cusAddress').value.trim();
+
+            localStorage.setItem('i6_current_name', name);
+            localStorage.setItem('i6_current_phone', phone);
+            localStorage.setItem('i6_current_address', address);
+
+            localStorage.removeItem('i6_cart_' + phone);
+            updateCartCount();
+
+            alert(`Đặt hàng thành công!\nCảm ơn anh/chị ${name}. i6 Mobile sẽ liên hệ xác nhận đơn hàng qua SĐT ${phone}.`);
             closeCheckoutModal();
         }
 
