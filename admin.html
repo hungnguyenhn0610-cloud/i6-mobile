@@ -96,7 +96,7 @@
             margin-bottom: 5px;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -193,10 +193,20 @@
             <button class="tab-btn" onclick="switchTab('ordersTab', this)"><i class="fas fa-shopping-bag"></i> Đơn Hàng Mới (<span id="orderCountBadge">0</span>)</button>
         </div>
 
-        <!-- TAB 1: THÊM SẢN PHẨM (HỖ TRỢ NHIỀU ẢNH) -->
+        <!-- TAB 1: THÊM SẢN PHẨM (HỖ TRỢ NHIỀU ẢNH VÀ NHÃN HIỆU) -->
         <div id="addProductTab" class="admin-card">
             <h3 style="margin-bottom: 15px; color: #1f2937;">Thêm điện thoại mới lên gian hàng</h3>
             <form id="addProductForm" onsubmit="addNewProduct(event)">
+                <div class="form-group">
+                    <label>Nhãn hiệu máy:</label>
+                    <select id="prodBrand" required>
+                        <option value="iphone">iPhone (Apple)</option>
+                        <option value="samsung">Samsung</option>
+                        <option value="oppo">Oppo</option>
+                        <option value="xiaomi">Xiaomi</option>
+                        <option value="other">Hãng khác</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Tên điện thoại:</label>
                     <input type="text" id="prodName" required placeholder="VD: iPhone 18 Pro Max 512GB">
@@ -285,7 +295,7 @@
             if(tabId === 'ordersTab') loadOrders();
         }
 
-        // HÀM GỬI DỮ LIỆU SẢN PHẨM (HỖ TRỢ NHIỀU ẢNH) LÊN GOOGLE SHEETS
+        // HÀM GỬI DỮ LIỆU SẢN PHẨM (HỖ TRỢ BRAND, NHIỀU ẢNH) LÊN GOOGLE SHEETS
         function addNewProduct(e) {
             e.preventDefault();
             
@@ -298,6 +308,7 @@
             }
 
             const formData = new URLSearchParams();
+            formData.append('brand', document.getElementById('prodBrand').value); // Gửi thêm nhãn hiệu
             formData.append('name', document.getElementById('prodName').value.trim());
             formData.append('price', document.getElementById('prodPrice').value);
             formData.append('oldPrice', document.getElementById('prodOldPrice').value);
@@ -307,7 +318,7 @@
 
             formData.append('promo', document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng");
 
-            alert('Đang gửi sản phẩm kèm danh sách nhiều ảnh lên hệ thống Google Sheets...');
+            alert('Đang gửi sản phẩm kèm nhãn hiệu và danh sách nhiều ảnh lên hệ thống Google Sheets...');
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -318,7 +329,7 @@
             })
             .then(response => response.text())
             .then(result => {
-                alert('Thêm sản phẩm thành công! Đã lưu đầy đủ hình ảnh vào hệ thống.');
+                alert('Thêm sản phẩm thành công! Đã lưu dữ liệu vào hệ thống.');
                 document.getElementById('addProductForm').reset();
             })
             .catch(err => {
@@ -343,7 +354,6 @@
             orders.forEach((o, index) => {
                 const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(o.price).replace('₫', 'đ');
                 
-                // Trạng thái xử lý (Mặc định là chưa xử lý nếu chưa có)
                 let isProcessed = o.status === 'Đã xử lý';
                 let statusBadge = isProcessed 
                     ? `<span style="color: #065f46; font-weight: 600;"><i class="fas fa-check-circle"></i> Đã xử lý</span>` 
@@ -371,7 +381,6 @@
             });
         }
 
-        // ĐỔI TRẠNG THÁI XỬ LÝ ĐƠN HÀNG
         function toggleOrderStatus(index) {
             let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             if (orders[index]) {
@@ -381,7 +390,6 @@
             }
         }
 
-        // XÓA ĐƠN HÀNG
         function deleteOrder(index) {
             if (confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?')) {
                 let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
