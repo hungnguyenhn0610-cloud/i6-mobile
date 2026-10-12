@@ -18,9 +18,27 @@
             color: #333;
         }
 
-        /* GIAO DIỆN QUẢN TRỊ CHÍNH (HIỂN THỊ LUÔN) */
+        /* MÀN HÌNH ĐĂNG NHẬP */
+        #loginScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* GIAO DIỆN QUẢN TRỊ CHÍNH */
         #adminDashboard {
-            display: block;
+            display: none;
             max-width: 1100px;
             margin: 30px auto;
             padding: 0 15px;
@@ -126,9 +144,39 @@
             margin-top: 4px;
             display: block;
         }
+
+        /* Nút thao tác trong bảng đơn hàng */
+        .btn-action {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 3px;
+        }
+        .btn-status-pending { background: #fef3c7; color: #d97706; }
+        .btn-status-done { background: #d1fae5; color: #065f46; }
+        .btn-delete { background: #fee2e2; color: #dc2626; }
     </style>
 </head>
 <body>
+
+    <!-- MÀN HÌNH BẢO MẬT ĐĂNG NHẬP -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <h2 style="margin-bottom: 20px; color: #d70018; text-align: center;"><i class="fas fa-lock"></i> Đăng Nhập Admin</h2>
+            <div class="form-group">
+                <label>Mật khẩu quản trị:</label>
+                <input type="password" id="adminPassInput" placeholder="Nhập mật khẩu (i6icloud)..." onkeypress="checkEnter(event)">
+            </div>
+            <button class="btn-main" style="width: 100%;" onclick="loginAdmin()">ĐĂNG NHẬP HỆ THỐNG</button>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Quay lại trang chủ i6 Mobile</a>
+            </div>
+        </div>
+    </div>
 
     <!-- GIAO DIỆN QUẢN TRỊ CHÍNH -->
     <div id="adminDashboard">
@@ -136,6 +184,7 @@
             <h2><i class="fas fa-cogs"></i> Quản Trị i6 Mobile</h2>
             <div>
                 <a href="index.html" class="back-link" style="margin-right: 20px;" target="_blank"><i class="fas fa-external-link-alt"></i> Xem Website</a>
+                <button class="btn-main" onclick="logoutAdmin()" style="background: #4b5563;">Đăng xuất</button>
             </div>
         </div>
 
@@ -187,8 +236,10 @@
                             <th>Khách hàng</th>
                             <th>Số điện thoại</th>
                             <th>Sản phẩm đặt</th>
-                            <th>Hình thức thanh toán</th>
+                            <th>Thanh toán</th>
+                            <th>Trạng thái xử lý</th>
                             <th>Thời gian</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody id="orderTableBody">
@@ -201,13 +252,30 @@
 
     <!-- SCRIPT QUẢN TRỊ ADMIN -->
     <script>
-        // Link Web App Google Apps Script của bạn
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
-        // Tự động tải danh sách đơn hàng ngay khi mở trang
-        window.onload = function() {
-            loadOrders();
-        };
+        function checkEnter(e) {
+            if (e.key === 'Enter') {
+                loginAdmin();
+            }
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPassInput').value.trim();
+            if (pass === 'i6icloud') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadOrders();
+            } else {
+                alert('Mật khẩu quản trị không đúng! (Mật khẩu: i6icloud)');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminPassInput').value = '';
+        }
 
         function switchTab(tabId, btn) {
             document.querySelectorAll('.admin-card').forEach(el => el.style.display = 'none');
@@ -260,6 +328,7 @@
             });
         }
 
+        // TẢI VÀ HIỂN THỊ DANH SÁCH ĐƠN HÀNG
         function loadOrders() {
             let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             const tbody = document.getElementById('orderTableBody');
@@ -267,23 +336,59 @@
             tbody.innerHTML = '';
 
             if (orders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Chưa có đơn hàng nào được đặt từ khách hàng.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Chưa có đơn hàng nào được đặt từ khách hàng.</td></tr>`;
                 return;
             }
 
-            orders.forEach(o => {
+            orders.forEach((o, index) => {
                 const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(o.price).replace('₫', 'đ');
+                
+                // Trạng thái xử lý (Mặc định là chưa xử lý nếu chưa có)
+                let isProcessed = o.status === 'Đã xử lý';
+                let statusBadge = isProcessed 
+                    ? `<span style="color: #065f46; font-weight: 600;"><i class="fas fa-check-circle"></i> Đã xử lý</span>` 
+                    : `<span style="color: #d97706; font-weight: 600;"><i class="fas fa-clock"></i> Chờ xử lý</span>`;
+                
+                let toggleStatusBtn = isProcessed
+                    ? `<button class="btn-action btn-status-pending" onclick="toggleOrderStatus(${index})">Đánh dấu Chưa xử lý</button>`
+                    : `<button class="btn-action btn-status-done" onclick="toggleOrderStatus(${index})">Đánh dấu Đã xử lý</button>`;
+
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${o.id}</strong></td>
+                        <td><strong>${o.id || ('DH' + index)}</strong></td>
                         <td>${o.name}<br><small style="color:#666;">${o.address}</small></td>
                         <td>${o.phone}</td>
                         <td>${o.product}<br><strong style="color:#d70018;">${formattedPrice}</strong></td>
                         <td><span style="color:green; font-weight:600;">${o.payment}</span></td>
+                        <td>${statusBadge}</td>
                         <td>${o.date}</td>
+                        <td>
+                            ${toggleStatusBtn}
+                            <button class="btn-action btn-delete" onclick="deleteOrder(${index})"><i class="fas fa-trash"></i> Xóa</button>
+                        </td>
                     </tr>
                 `;
             });
+        }
+
+        // ĐỔI TRẠNG THÁI XỬ LÝ ĐƠN HÀNG
+        function toggleOrderStatus(index) {
+            let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            if (orders[index]) {
+                orders[index].status = (orders[index].status === 'Đã xử lý') ? 'Chờ xử lý' : 'Đã xử lý';
+                localStorage.setItem('i6_orders', JSON.stringify(orders));
+                loadOrders();
+            }
+        }
+
+        // XÓA ĐƠN HÀNG
+        function deleteOrder(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?')) {
+                let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+                orders.splice(index, 1);
+                localStorage.setItem('i6_orders', JSON.stringify(orders));
+                loadOrders();
+            }
         }
     </script>
 </body>
