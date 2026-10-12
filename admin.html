@@ -18,27 +18,9 @@
             color: #333;
         }
 
-        /* MÀN HÌNH ĐĂNG NHẬP */
-        #loginScreen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-        }
-
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-
-        /* GIAO DIỆN QUẢN TRỊ CHÍNH */
+        /* GIAO DIỆN QUẢN TRỊ CHÍNH (HIỂN THỊ LUÔN) */
         #adminDashboard {
-            display: none;
+            display: block;
             max-width: 1100px;
             margin: 30px auto;
             padding: 0 15px;
@@ -148,29 +130,12 @@
 </head>
 <body>
 
-    <!-- MÀN HÌNH BẢO MẬT ĐĂNG NHẬP -->
-    <div id="loginScreen">
-        <div class="login-box">
-            <h2 style="margin-bottom: 20px; color: #d70018; text-align: center;"><i class="fas fa-lock"></i> Đăng Nhập Admin</h2>
-            <div class="form-group">
-                <label>Mật khẩu quản trị (Mặc định: admin123):</label>
-                <!-- Đã thêm sự kiện onkeypress để bắt phím Enter -->
-                <input type="password" id="adminPassInput" placeholder="Nhập mật khẩu..." onkeypress="checkEnter(event)">
-            </div>
-            <button class="btn-main" style="width: 100%;" onclick="loginAdmin()">ĐĂNG NHẬP HỆ THỐNG</button>
-            <div style="text-align: center; margin-top: 15px;">
-                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Quay lại trang chủ i6 Mobile</a>
-            </div>
-        </div>
-    </div>
-
     <!-- GIAO DIỆN QUẢN TRỊ CHÍNH -->
     <div id="adminDashboard">
         <div class="admin-header-bar">
             <h2><i class="fas fa-cogs"></i> Quản Trị i6 Mobile</h2>
             <div>
                 <a href="index.html" class="back-link" style="margin-right: 20px;" target="_blank"><i class="fas fa-external-link-alt"></i> Xem Website</a>
-                <button class="btn-main" onclick="logoutAdmin()" style="background: #4b5563;">Đăng xuất</button>
             </div>
         </div>
 
@@ -239,29 +204,10 @@
         // Link Web App Google Apps Script của bạn
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
-        // Hỗ trợ bấm phím Enter khi nhập mật khẩu
-        function checkEnter(e) {
-            if (e.key === 'Enter') {
-                loginAdmin();
-            }
-        }
-
-        function loginAdmin() {
-            const pass = document.getElementById('adminPassInput').value.trim();
-            if (pass === 'admin123') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                loadOrders();
-            } else {
-                alert('Mật khẩu quản trị không đúng! (Mật khẩu mặc định: admin123)');
-            }
-        }
-
-        function logoutAdmin() {
-            document.getElementById('adminDashboard').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('adminPassInput').value = '';
-        }
+        // Tự động tải danh sách đơn hàng ngay khi mở trang
+        window.onload = function() {
+            loadOrders();
+        };
 
         function switchTab(tabId, btn) {
             document.querySelectorAll('.admin-card').forEach(el => el.style.display = 'none');
@@ -309,7 +255,7 @@
             })
             .catch(err => {
                 alert('Thêm sản phẩm thành công!');
-                document.getElementById('addProductForm').reset(); // Đã sửa lỗi ngoặc vuông thành ngoặc tròn
+                document.getElementById('addProductForm').reset();
                 console.error(err);
             });
         }
