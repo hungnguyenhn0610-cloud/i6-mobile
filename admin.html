@@ -137,6 +137,13 @@
             font-weight: 600;
             font-size: 13px;
         }
+
+        .note-text {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -171,7 +178,7 @@
             <button class="tab-btn" onclick="switchTab('ordersTab', this)"><i class="fas fa-shopping-bag"></i> Đơn Hàng Mới (<span id="orderCountBadge">0</span>)</button>
         </div>
 
-        <!-- TAB 1: THÊM SẢN PHẨM -->
+        <!-- TAB 1: THÊM SẢN PHẨM (HỖ TRỢ NHIỀU ẢNH) -->
         <div id="addProductTab" class="admin-card">
             <h3 style="margin-bottom: 15px; color: #1f2937;">Thêm điện thoại mới lên gian hàng</h3>
             <form id="addProductForm" onsubmit="addNewProduct(event)">
@@ -187,10 +194,14 @@
                     <label>Giá cũ niêm yết (VNĐ):</label>
                     <input type="number" id="prodOldPrice" required placeholder="VD: 35990000">
                 </div>
+                
+                <!-- THAY ĐỔI: HỖ TRỢ NHIỀU LINK ẢNH SẢN PHẨM -->
                 <div class="form-group">
-                    <label>Link ảnh sản phẩm (URL trực tuyến):</label>
-                    <input type="url" id="prodImg" required placeholder="Dán link ảnh vào đây...">
+                    <label>Danh sách Link ảnh sản phẩm (Ảnh đại diện & Ảnh chi tiết):</label>
+                    <textarea id="prodImgList" rows="3" required placeholder="Dán các link ảnh, mỗi link một dòng hoặc cách nhau bằng dấu phẩy (,)..."></textarea>
+                    <span class="note-text">💡 Link ảnh đầu tiên sẽ được dùng làm ảnh đại diện chính ngoài trang chủ. Các link tiếp theo dùng làm album ảnh chi tiết cho sản phẩm.</span>
                 </div>
+
                 <div class="form-group">
                     <label>Chương trình khuyến mãi / Tặng kèm:</label>
                     <input type="text" id="prodPromo" placeholder="VD: Tặng củ sạc 45W • Trả góp 0%">
@@ -252,18 +263,31 @@
             if(tabId === 'ordersTab') loadOrders();
         }
 
-        // HÀM GỬI DỮ LIỆU SẢN PHẨM LÊN GOOGLE SHEETS QUA FORM-DATA
+        // HÀM GỬI DỮ LIỆU SẢN PHẨM (HỖ TRỢ NHIỀU ẢNH) LÊN GOOGLE SHEETS
         function addNewProduct(e) {
             e.preventDefault();
             
+            // Xử lý chuỗi link ảnh: tách các link theo xuống dòng hoặc dấu phẩy để chuẩn hóa thành mảng hoặc chuỗi phân tách
+            const rawImgInput = document.getElementById('prodImgList').value.trim();
+            const imgLinks = rawImgInput.split(/[\n,]+/).map(link => link.trim()).filter(link => link.length > 0);
+            
+            if (imgLinks.length === 0) {
+                alert('Vui lòng nhập ít nhất một link ảnh hợp lệ!');
+                return;
+            }
+
             const formData = new URLSearchParams();
             formData.append('name', document.getElementById('prodName').value.trim());
             formData.append('price', document.getElementById('prodPrice').value);
             formData.append('oldPrice', document.getElementById('prodOldPrice').value);
-            formData.append('img', document.getElementById('prodImg').value.trim());
+            
+            // Gửi ảnh chính (ảnh đầu tiên) và danh sách toàn bộ ảnh (nối bằng dấu phẩy hoặc JSON string tùy theo code bên index.html của bạn xử lý)
+            formData.append('img', imgLinks[0]); 
+            formData.append('images', JSON.stringify(imgLinks)); // Gửi kèm danh sách tất cả các ảnh dưới dạng chuỗi JSON
+
             formData.append('promo', document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng");
 
-            alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
+            alert('Đang gửi sản phẩm kèm danh sách nhiều ảnh lên hệ thống Google Sheets...');
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
@@ -274,12 +298,12 @@
             })
             .then(response => response.text())
             .then(result => {
-                alert('Thêm sản phẩm thành công! Sản phẩm đã được lưu vào Google Sheets.');
+                alert('Thêm sản phẩm thành công! Đã lưu đầy đủ hình ảnh vào hệ thống.');
                 document.getElementById('addProductForm').reset();
             })
             .catch(err => {
                 alert('Thêm sản phẩm thành công!');
-                document.getElementById('addProductForm').reset();
+                document.getElementById('addProductForm'].reset();
                 console.error(err);
             });
         }
