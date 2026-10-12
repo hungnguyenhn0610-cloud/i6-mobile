@@ -145,7 +145,6 @@
             display: block;
         }
 
-        /* Nút thao tác trong bảng đơn hàng */
         .btn-action {
             padding: 5px 10px;
             border: none;
@@ -193,7 +192,7 @@
             <button class="tab-btn" onclick="switchTab('ordersTab', this)"><i class="fas fa-shopping-bag"></i> Đơn Hàng Mới (<span id="orderCountBadge">0</span>)</button>
         </div>
 
-        <!-- TAB 1: THÊM SẢN PHẨM (HỖ TRỢ NHIỀU ẢNH VÀ NHÃN HIỆU) -->
+        <!-- TAB 1: THÊM SẢN PHẨM -->
         <div id="addProductTab" class="admin-card">
             <h3 style="margin-bottom: 15px; color: #1f2937;">Thêm điện thoại mới lên gian hàng</h3>
             <form id="addProductForm" onsubmit="addNewProduct(event)">
@@ -220,11 +219,10 @@
                     <input type="number" id="prodOldPrice" required placeholder="VD: 35990000">
                 </div>
                 
-                <!-- HỖ TRỢ NHIỀU LINK ẢNH SẢN PHẨM -->
                 <div class="form-group">
                     <label>Danh sách Link ảnh sản phẩm (Ảnh đại diện & Ảnh chi tiết):</label>
                     <textarea id="prodImgList" rows="3" required placeholder="Dán các link ảnh, mỗi link một dòng hoặc cách nhau bằng dấu phẩy (,)..."></textarea>
-                    <span class="note-text">💡 Link ảnh đầu tiên sẽ được dùng làm ảnh đại diện chính ngoài trang chủ. Các link tiếp theo dùng làm album ảnh chi tiết cho sản phẩm.</span>
+                    <span class="note-text">💡 Link ảnh đầu tiên sẽ được dùng làm ảnh đại diện chính. Các link tiếp theo dùng làm album chi tiết.</span>
                 </div>
 
                 <div class="form-group">
@@ -235,7 +233,7 @@
             </form>
         </div>
 
-        <!-- TAB 2: XEM ĐƠN HÀNG ĐẨY VỀ -->
+        <!-- TAB 2: XEM ĐƠN HÀNG -->
         <div id="ordersTab" class="admin-card" style="display: none;">
             <h3 style="margin-bottom: 15px; color: #1f2937;">Danh sách khách hàng đặt mua / trả góp</h3>
             <div style="overflow-x: auto;">
@@ -252,22 +250,17 @@
                             <th>Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody id="orderTableBody">
-                        <!-- Đơn hàng tự động đồng bộ vào đây -->
-                    </tbody>
+                    <tbody id="orderTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT QUẢN TRỊ ADMIN -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
+        const SCRIPT_URL = "ĐIỀN_LINK_WEB_APP_GOOGLE_APPS_SCRIPT_CỦA_BẠN_VÀO_ĐÂY";
 
         function checkEnter(e) {
-            if (e.key === 'Enter') {
-                loginAdmin();
-            }
+            if (e.key === 'Enter') loginAdmin();
         }
 
         function loginAdmin() {
@@ -295,7 +288,6 @@
             if(tabId === 'ordersTab') loadOrders();
         }
 
-        // HÀM GỬI DỮ LIỆU SẢN PHẨM (HỖ TRỢ BRAND, NHIỀU ẢNH) LÊN GOOGLE SHEETS
         function addNewProduct(e) {
             e.preventDefault();
             
@@ -308,28 +300,24 @@
             }
 
             const formData = new URLSearchParams();
-            formData.append('brand', document.getElementById('prodBrand').value); // Gửi thêm nhãn hiệu
+            formData.append('brand', document.getElementById('prodBrand').value);
             formData.append('name', document.getElementById('prodName').value.trim());
             formData.append('price', document.getElementById('prodPrice').value);
             formData.append('oldPrice', document.getElementById('prodOldPrice').value);
-            
             formData.append('img', imgLinks[0]); 
             formData.append('images', JSON.stringify(imgLinks));
-
             formData.append('promo', document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng");
 
-            alert('Đang gửi sản phẩm kèm nhãn hiệu và danh sách nhiều ảnh lên hệ thống Google Sheets...');
+            alert('Đang gửi sản phẩm lên hệ thống Google Sheets...');
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
             })
             .then(response => response.text())
             .then(result => {
-                alert('Thêm sản phẩm thành công! Đã lưu dữ liệu vào hệ thống.');
+                alert('Thêm sản phẩm thành công!');
                 document.getElementById('addProductForm').reset();
             })
             .catch(err => {
@@ -339,7 +327,6 @@
             });
         }
 
-        // TẢI VÀ HIỂN THỊ DANH SÁCH ĐƠN HÀNG
         function loadOrders() {
             let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
             const tbody = document.getElementById('orderTableBody');
@@ -353,7 +340,6 @@
 
             orders.forEach((o, index) => {
                 const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(o.price).replace('₫', 'đ');
-                
                 let isProcessed = o.status === 'Đã xử lý';
                 let statusBadge = isProcessed 
                     ? `<span style="color: #065f46; font-weight: 600;"><i class="fas fa-check-circle"></i> Đã xử lý</span>` 
