@@ -283,7 +283,6 @@
             min-width: 0;
         }
 
-        /* BANNER ĐÃ ĐƯỢC CHỈNH VỪA KHÍT, KHÔNG CÒN LỖI NỀN ĐEN */
         .main-banner-card {
             background: transparent;
             border-radius: 12px;
@@ -836,17 +835,9 @@
             }
         }
 
-        function saveCart(cart) {
-            const phone = getCurrentUserPhone();
-            if (phone) {
-                localStorage.setItem('i6_cart_' + phone, JSON.stringify(cart));
-                updateCartCount();
-            }
-        }
-
         function updateCartCount() {
             const cart = getCart();
-            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
             document.getElementById('cartCount').innerText = totalCount;
         }
 
@@ -885,12 +876,12 @@
                     <div class="product-card">
                         <div>
                             <div class="product-img-wrapper" onclick="openProductDetail(${index})">
-                                <img src="${p.img}" class="product-img" alt="${p.name}">
+                                <img src="${p.img || ''}" class="product-img" alt="${p.name || ''}">
                             </div>
-                            <div class="product-name" onclick="openProductDetail(${index})">${p.name}</div>
+                            <div class="product-name" onclick="openProductDetail(${index})">${p.name || ''}</div>
                             <div class="product-price-box">
-                                <span class="card-price">${formatCurrency(p.price)}</span>
-                                <span class="card-old-price">${formatCurrency(p.oldPrice || p.price)}</span>
+                                <span class="card-price">${formatCurrency(p.price || 0)}</span>
+                                <span class="card-old-price">${formatCurrency(p.oldprice || p.oldPrice || p.price || 0)}</span>
                             </div>
                             <div class="card-promo"><i class="fas fa-gift"></i> ${p.promo || 'Ưu đãi quà tặng đặc biệt'}</div>
                         </div>
@@ -907,19 +898,26 @@
             const p = products[index];
             if (!p) return;
 
-            document.getElementById('detailName').innerText = p.name;
-            document.getElementById('detailPrice').innerText = formatCurrency(p.price);
-            document.getElementById('detailOldPrice').innerText = formatCurrency(p.oldPrice || p.price);
+            document.getElementById('detailName').innerText = p.name || '';
+            document.getElementById('detailPrice').innerText = formatCurrency(p.price || 0);
+            document.getElementById('detailOldPrice').innerText = formatCurrency(p.oldprice || p.oldPrice || p.price || 0);
             document.getElementById('detailPromo').innerHTML = `<i class="fas fa-gift"></i> ${p.promo || 'Ưu đãi quà tặng đặc biệt'}`;
             
             let imageList = [];
             if (p.images) {
-                if (Array.isArray(p.images)) {
-                    imageList = p.images;
-                } else if (typeof p.images === 'string') {
-                    imageList = p.images.split(',').map(s => s.trim());
+                try {
+                    if (typeof p.images === 'string' && p.images.startsWith('[')) {
+                        imageList = JSON.parse(p.images);
+                    } else if (typeof p.images === 'string') {
+                        imageList = p.images.split(',').map(s => s.trim());
+                    } else if (Array.isArray(p.images)) {
+                        imageList = p.images;
+                    }
+                } catch (e) {
+                    imageList = [p.img];
                 }
-            } else if (p.img) {
+            }
+            if (!imageList || imageList.length === 0) {
                 imageList = [p.img];
             }
 
@@ -959,103 +957,36 @@
         }
 
         function handleSearch(keyword) {
-            const box = document.getElementById('searchSuggestions');
-            if (!keyword || !keyword.trim()) {
-                box.style.display = 'none';
+            const suggestionBox = document.getElementById('searchSuggestions');
+            if (!keyword.trim()) {
+                suggestionBox.style.display = 'none';
                 return;
             }
 
-            const cleanKey = keyword.toLowerCase().trim();
-            const filtered = products.map((p, idx) => ({...p, originalIndex: idx})).filter(p => p.name.toLowerCase().includes(cleanKey));
-
+            const filtered = products.filter(p => (p.name || '').toLowerCase().includes(keyword.toLowerCase()));
             if (filtered.length === 0) {
-                box.innerHTML = `<div style="padding: 12px; font-size: 13px; color: #64748b; text-align: center;">Không tìm thấy sản phẩm phù hợp</div>`;
-                box.style.display = 'block';
+                suggestionBox.style.display = 'none';
                 return;
             }
 
-            box.innerHTML = '';
-            filtered.forEach(p => {
-                box.innerHTML += `
-                    <div class="suggestion-item" onclick="openProductDetail(${p.originalIndex}); document.getElementById('searchSuggestions').style.display = 'none';">
-                        <img src="${p.img}" alt="${p.name}">
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 700; font-size: 13px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name}</div>
-                            <div style="color: #dc2626; font-weight: 800; font-size: 12px; margin-top: 2px;">${formatCurrency(p.price)}</div>
+            suggestionBox.innerHTML = '';
+            filtered.forEach((p) => {
+                const originalIndex = products.indexOf(p);
+                suggestionBox.innerHTML += `
+                    <div class="suggestion-item" onclick="openProductDetail(${originalIndex}); document.getElementById('searchSuggestions').style.display='none';">
+                        <img src="${p.img || ''}" alt="${p.name || ''}">
+                        <div>
+                            <div style="font-weight:600; font-size:13px;">${p.name || ''}</div>
+                            <div style="color:#dc2626; font-weight:700; font-size:12px;">${formatCurrency(p.price || 0)}</div>
                         </div>
-                        <i class="fas fa-chevron-right" style="font-size: 10px; color: #cbd5e1;"></i>
                     </div>
                 `;
             });
-            box.style.display = 'block';
+            suggestionBox.style.display = 'block';
         }
 
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-box')) {
-                document.getElementById('searchSuggestions').style.display = 'none';
-            }
-            if (!e.target.closest('.location-dropdown')) {
-                document.getElementById('locationMenu').style.display = 'none';
-            }
-        });
-
-        function addToCartAndBuy(productName, price) {
-            document.getElementById('searchSuggestions').style.display = 'none';
-            
-            const phone = getCurrentUserPhone();
-            if (!phone) {
-                alert('Vui lòng nhập số điện thoại để hệ thống lưu giỏ hàng riêng cho bạn.');
-                openCheckout(productName, price);
-                return;
-            }
-
-            let cart = getCart();
-            let existingItem = cart.find(item => item.name === productName);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name: productName, price: price, quantity: 1 });
-            }
-            saveCart(cart);
-            alert(`Đã thêm "${productName}" vào giỏ hàng!`);
-        }
-
-        function openCartQuickView() {
-            const phone = getCurrentUserPhone();
-            if (!phone) {
-                alert('Bạn chưa lưu số điện thoại trên thiết bị này. Hãy bấm mua 1 sản phẩm bất kỳ để nhập số điện thoại định danh.');
-                openCheckout('Sản phẩm bất kỳ', 0);
-                return;
-            }
-
-            const cart = getCart();
-            if (cart.length === 0) {
-                alert('Giỏ hàng của bạn đang trống.');
-                return;
-            }
-
-            let totalMoney = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            let details = cart.map(item => `- ${item.name} x${item.quantity} (${formatCurrency(item.price * item.quantity)})`).join('\n');
-            
-            if (confirm(`GIỎ HÀNG CỦA BẠN (SĐT: ${phone}):\n\n${details}\n\nTổng tiền: ${formatCurrency(totalMoney)}\n\nBạn có muốn tiến hành đặt toàn bộ giỏ hàng này không?`)) {
-                openCheckout(`Giỏ hàng (${cart.length} sản phẩm)`, totalMoney);
-            }
-        }
-
-        function openCheckout(productName, price) {
-            document.getElementById('searchSuggestions').style.display = 'none';
-            document.getElementById('checkoutProductInfo').innerHTML = `Sản phẩm: <span style="color:#1d4ed8">${productName}</span> - Tổng tiền: <span style="color:#dc2626">${formatCurrency(price)}</span>`;
-            
-            if (localStorage.getItem('i6_current_name')) {
-                document.getElementById('cusName').value = localStorage.getItem('i6_current_name');
-            }
-            if (localStorage.getItem('i6_current_phone')) {
-                document.getElementById('cusPhone').value = localStorage.getItem('i6_current_phone');
-            }
-            if (localStorage.getItem('i6_current_address')) {
-                document.getElementById('cusAddress').value = localStorage.getItem('i6_current_address');
-            }
-
+        function addToCartAndBuy(productName, productPrice) {
+            document.getElementById('checkoutProductInfo').innerText = `Sản phẩm: ${productName} - Giá: ${formatCurrency(productPrice)}`;
             document.getElementById('checkoutModal').style.display = 'flex';
         }
 
@@ -1068,21 +999,73 @@
             const name = document.getElementById('cusName').value.trim();
             const phone = document.getElementById('cusPhone').value.trim();
             const address = document.getElementById('cusAddress').value.trim();
+            const payment = document.getElementById('cusPayment').value;
+            const productInfo = document.getElementById('checkoutProductInfo').innerText;
 
-            localStorage.setItem('i6_current_name', name);
+            if (!phone) {
+                alert('Vui lòng nhập số điện thoại!');
+                return;
+            }
+
             localStorage.setItem('i6_current_phone', phone);
-            localStorage.setItem('i6_current_address', address);
 
-            localStorage.removeItem('i6_cart_' + phone);
-            updateCartCount();
+            let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            const newOrder = {
+                id: 'DH' + Date.now().toString().slice(-6),
+                name: name,
+                phone: phone,
+                address: address,
+                product: productInfo,
+                payment: payment,
+                status: 'Chờ xử lý',
+                date: new Date().toLocaleString('vi-VN')
+            };
 
-            alert(`Đặt hàng thành công!\nCảm ơn anh/chị ${name}. i6 Mobile sẽ liên hệ xác nhận đơn hàng qua SĐT ${phone}.`);
+            orders.unshift(newOrder);
+            localStorage.setItem('i6_orders', JSON.stringify(orders));
+
+            alert('Đặt hàng thành công! Nhân viên i6 Mobile sẽ liên hệ xác nhận đơn hàng trong thời gian sớm nhất.');
             closeCheckoutModal();
+            document.getElementById('orderForm').reset();
+            updateCartCount();
         }
 
+        function openCartQuickView() {
+            const phone = prompt('Nhập số điện thoại của bạn để xem lịch sử đơn hàng đã đặt:');
+            if (!phone) return;
+            localStorage.setItem('i6_current_phone', phone.trim());
+            
+            let orders = JSON.parse(localStorage.getItem('i6_orders')) || [];
+            let myOrders = orders.filter(o => o.phone === phone.trim());
+
+            if (myOrders.length === 0) {
+                alert('Không tìm thấy đơn hàng nào với số điện thoại này.');
+                return;
+            }
+
+            let msg = "DANH SÁCH ĐƠN HÀNG CỦA BẠN:\n\n";
+            myOrders.forEach((o, idx) => {
+                msg += `${idx + 1}. Mã: ${o.id} | ${o.product} | Trạng thái: ${o.status} (${o.date})\n`;
+            });
+            alert(msg);
+        }
+
+        // Tự động tải sản phẩm khi vừa mở trang web
         window.onload = function() {
             fetchProductsFromSheet();
         };
+
+        // Đóng menu gợi ý khi click ra ngoài
+        window.onclick = function(e) {
+            if (!e.target.closest('.search-box')) {
+                const suggestionBox = document.getElementById('searchSuggestions');
+                if(suggestionBox) suggestionBox.style.display = 'none';
+            }
+            if (!e.target.closest('.location-dropdown')) {
+                const locMenu = document.getElementById('locationMenu');
+                if(locMenu) locMenu.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
