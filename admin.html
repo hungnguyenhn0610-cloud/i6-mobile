@@ -154,7 +154,8 @@
             <h2 style="margin-bottom: 20px; color: #d70018; text-align: center;"><i class="fas fa-lock"></i> Đăng Nhập Admin</h2>
             <div class="form-group">
                 <label>Mật khẩu quản trị (Mặc định: admin123):</label>
-                <input type="password" id="adminPassInput" placeholder="Nhập mật khẩu...">
+                <!-- Đã thêm sự kiện onkeypress để bắt phím Enter -->
+                <input type="password" id="adminPassInput" placeholder="Nhập mật khẩu..." onkeypress="checkEnter(event)">
             </div>
             <button class="btn-main" style="width: 100%;" onclick="loginAdmin()">ĐĂNG NHẬP HỆ THỐNG</button>
             <div style="text-align: center; margin-top: 15px;">
@@ -195,7 +196,7 @@
                     <input type="number" id="prodOldPrice" required placeholder="VD: 35990000">
                 </div>
                 
-                <!-- THAY ĐỔI: HỖ TRỢ NHIỀU LINK ẢNH SẢN PHẨM -->
+                <!-- HỖ TRỢ NHIỀU LINK ẢNH SẢN PHẨM -->
                 <div class="form-group">
                     <label>Danh sách Link ảnh sản phẩm (Ảnh đại diện & Ảnh chi tiết):</label>
                     <textarea id="prodImgList" rows="3" required placeholder="Dán các link ảnh, mỗi link một dòng hoặc cách nhau bằng dấu phẩy (,)..."></textarea>
@@ -238,8 +239,15 @@
         // Link Web App Google Apps Script của bạn
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaHSmUIb64WqnaAflSXgE0aEw-tUROLBQ_8MThNVwgT3rvlFbceADOnQSmag14dVo/exec";
 
+        // Hỗ trợ bấm phím Enter khi nhập mật khẩu
+        function checkEnter(e) {
+            if (e.key === 'Enter') {
+                loginAdmin();
+            }
+        }
+
         function loginAdmin() {
-            const pass = document.getElementById('adminPassInput').value;
+            const pass = document.getElementById('adminPassInput').value.trim();
             if (pass === 'admin123') {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
@@ -267,7 +275,6 @@
         function addNewProduct(e) {
             e.preventDefault();
             
-            // Xử lý chuỗi link ảnh: tách các link theo xuống dòng hoặc dấu phẩy để chuẩn hóa thành mảng hoặc chuỗi phân tách
             const rawImgInput = document.getElementById('prodImgList').value.trim();
             const imgLinks = rawImgInput.split(/[\n,]+/).map(link => link.trim()).filter(link => link.length > 0);
             
@@ -281,9 +288,8 @@
             formData.append('price', document.getElementById('prodPrice').value);
             formData.append('oldPrice', document.getElementById('prodOldPrice').value);
             
-            // Gửi ảnh chính (ảnh đầu tiên) và danh sách toàn bộ ảnh (nối bằng dấu phẩy hoặc JSON string tùy theo code bên index.html của bạn xử lý)
             formData.append('img', imgLinks[0]); 
-            formData.append('images', JSON.stringify(imgLinks)); // Gửi kèm danh sách tất cả các ảnh dưới dạng chuỗi JSON
+            formData.append('images', JSON.stringify(imgLinks));
 
             formData.append('promo', document.getElementById('prodPromo').value.trim() || "Chính hãng • Bảo hành 12 tháng");
 
@@ -303,7 +309,7 @@
             })
             .catch(err => {
                 alert('Thêm sản phẩm thành công!');
-                document.getElementById('addProductForm'].reset();
+                document.getElementById('addProductForm').reset(); // Đã sửa lỗi ngoặc vuông thành ngoặc tròn
                 console.error(err);
             });
         }
