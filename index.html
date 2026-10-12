@@ -283,20 +283,22 @@
             min-width: 0;
         }
 
+        /* BANNER ĐÃ ĐƯỢC CHỈNH VỪA KHÍT, KHÔNG CÒN LỖI NỀN ĐEN */
         .main-banner-card {
-            background: #000;
+            background: transparent;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            width: 100%;
         }
 
         .banner-exact-img {
             width: 100%;
             height: auto;
-            max-height: 320px;
-            object-fit: contain;
+            max-height: 380px;
+            object-fit: cover;
             display: block;
-            margin: 0 auto;
+            border-radius: 12px;
         }
 
         .installment-box-red {
@@ -492,7 +494,7 @@
             color: #94a3b8;
         }
 
-        /* MODAL COMMON */
+        /* MODAL */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -579,7 +581,7 @@
             background: #b91c1c;
         }
 
-        /* PRODUCT DETAIL GALLERY STYLES */
+        /* GALLERY STYLES */
         .detail-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -699,7 +701,7 @@
 
             <main class="hero-center-banner">
                 <div class="main-banner-card">
-                    <img src="https://www.i6mobile.com/baner.jpg" class="banner-exact-img">
+                    <img src="https://www.i6mobile.com/baner.png" class="banner-exact-img">
                 </div>
 
                 <div class="installment-box-red">
@@ -715,7 +717,7 @@
         <div class="product-grid" id="productGrid"></div>
     </div>
 
-    <!-- MODAL XEM CHI TIẾT SẢN PHẨM (ALBUM HÌNH ẢNH) -->
+    <!-- MODAL XEM CHI TIẾT SẢN PHẨM -->
     <div class="modal-overlay" id="productDetailModal">
         <div class="modal-detail-content">
             <button class="modal-close" onclick="closeProductDetailModal()">&times;</button>
@@ -820,7 +822,6 @@
 
         let products = [];
         
-        /* QUẢN LÝ GIỎ HÀNG PHÂN BIỆT THEO SĐT */
         function getCurrentUserPhone() {
             return localStorage.getItem('i6_current_phone') || '';
         }
@@ -902,7 +903,6 @@
             });
         }
 
-        /* TÍNH NĂNG XEM CHI TIẾT SẢN PHẨM & BỘ ẢNH ALBUM */
         function openProductDetail(index) {
             const p = products[index];
             if (!p) return;
@@ -912,7 +912,6 @@
             document.getElementById('detailOldPrice').innerText = formatCurrency(p.oldPrice || p.price);
             document.getElementById('detailPromo').innerHTML = `<i class="fas fa-gift"></i> ${p.promo || 'Ưu đãi quà tặng đặc biệt'}`;
             
-            // Xử lý danh sách ảnh (Lấy p.images nếu có, hoặc dùng tạm p.img)
             let imageList = [];
             if (p.images) {
                 if (Array.isArray(p.images)) {
@@ -1000,7 +999,6 @@
             }
         });
 
-        /* GIỎ HÀNG & MUA HÀNG */
         function addToCartAndBuy(productName, price) {
             document.getElementById('searchSuggestions').style.display = 'none';
             
